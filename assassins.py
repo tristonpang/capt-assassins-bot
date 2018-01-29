@@ -1,6 +1,6 @@
 import requests
 
-url = "https://api.telegram.org/bot454094709:AAHlLv5OfquuiTfZ7aGMG9l7-5uhJh_VZxU/"
+##url = "https://api.telegram.org/bot454094709:AAHlLv5OfquuiTfZ7aGMG9l7-5uhJh_VZxU/"
 
 '''Takes in url(request) and gets response data. Returns in json format'''
 def get_updates_json(request):
