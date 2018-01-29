@@ -5,7 +5,7 @@ from werkzeug.contrib.cache import SimpleCache
 
 cache = SimpleCache()
 
-conn = psycopg2.connect("host=posql.yenter.io dbname=w user=s password=s")
+#conn = psycopg2.connect("host=localhost dbname=w user=s password=s")
 
 app = Flask(__name__)
 #cache = Client(('https://yenter.io/', 11211))
@@ -16,16 +16,16 @@ def index():
 
 @app.route("/assassins/<token>")
 def displayPage(token):
-    cur = conn.cursor()
-    cur.execute( )
-    data = cur.fetchone( )
+#    cur = conn.cursor()
+#    cur.execute( )
+#    data = cur.fetchone( )
     #slice data, add into return statement
     return render_template("info.html", )
 
 @app.route("/assassins/<token>/kill")
 def killPage(token):
-    cur = conn.cursor()
-    cur.execute( )
+    # cur = conn.cursor()
+    # cur.execute( )
     #set target's status to dead
     #set target's target, task to null
     #set user's new target to that of target's
