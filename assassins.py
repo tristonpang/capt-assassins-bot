@@ -6,6 +6,7 @@ url = "https://api.telegram.org/bot454094709:AAHlLv5OfquuiTfZ7aGMG9l7-5uhJh_VZxU
 def get_updates_json(request):
     params = {"timeout": 100, "offset": None} #timeout if no recent updates, offset to indicate a certain update is already seen
     response = requests.get(request + "getUpdates", data=params)
+    # print("received")
     return response.json()
 
 
@@ -28,6 +29,7 @@ def send_msg(chat, text):
     return response
 
 def process_request(update):
+    print("received")
     chat_id = update["message"]["chat"]["id"]
     if update["message"]["text"] == "/kill":
         send_msg(chat_id, "Kill command received")
