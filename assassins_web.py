@@ -5,7 +5,7 @@ from werkzeug.contrib.cache import SimpleCache
 
 cache = SimpleCache()
 
-#conn = psycopg2.connect("host=localhost dbname=w user=s password=s")
+conn = psycopg2.connect("host=localhost dbname=assassins user=assassins password=captslock")
 
 app = Flask(__name__)
 #cache = Client(('https://yenter.io/', 11211))
