@@ -30,7 +30,7 @@ def displayPage(token):
     target_name = task_data[1]
 
     #slice data, add into return statement
-    return render_template("player-info.html", usernick = user_nick, username = user_name, task = task_desc, target = target_name)
+    return render_template("player-info.html", usernick = user_nickname, username = user_name, task = task_desc, target = target_name)
 
 @app.route("/assassins/<token>/kill")
 def killPage(token):
