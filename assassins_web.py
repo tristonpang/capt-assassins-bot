@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 @app.route("/assassins/")
 def index():
-    return render_template("login.html")
+    return render_template("player-login.html")
 
 @app.route("/assassins/<token>")
 def displayPage(token):
@@ -30,7 +30,7 @@ def displayPage(token):
     target_name = task_data[1]
 
     #slice data, add into return statement
-    return render_template("info.html", usernick = user_nick, username = user_name, task = task_desc, target = target_name)
+    return render_template("player-info.html", usernick = user_nick, username = user_name, task = task_desc, target = target_name)
 
 @app.route("/assassins/<token>/kill")
 def killPage(token):
@@ -46,7 +46,7 @@ def killPage(token):
     #set user's new target and task
     cur.execute("SELECT user_name FROM users WHERE user_id = %s", (target_id,))
     old_target_name = cur.fetchone()[0]
-    return render_template("killconfirmed.html", dead_target = old_target_name)
+    return render_template("player-killconfirmed.html", dead_target = old_target_name)
 
 if __name__ == "__main__":
     app.run(debug = True)
