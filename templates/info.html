@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'style.css') }}">
+    <title>Dragon Assassins</title>
+</head>
+<body>
+    <div>
+        <h1>Welcome, __name__!</h1>
+        Your target: <span class='highlight'>__target__</span><br />
+        Your task: <span class='highlight'>__task__</span><br />
+        <button class='button'>Contract completed</button>
+    </div>
+</body>
+</html>
