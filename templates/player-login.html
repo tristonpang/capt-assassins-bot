@@ -5,15 +5,15 @@
     <meta name="viewport" content="initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename = 'normalize.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename = 'player-style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/player-style.css') }}">
     <title>Dragon Assassins</title>
 </head>
-<body>
+<body class='laptop-bg'>
     <div>
         <form action='' method='' onsubmit='return submitForm();'>
         <div>
-            Hello there! <br />Please enter your token:
+            Welcome.<br />Please enter your token:
         </div>
         <div>
             <input type='text' name='token' id='token'>

@@ -5,17 +5,17 @@
     <meta name="viewport" content="initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename = 'normalize.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename = 'player-style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/player-style.css') }}">
     <title>Dragon Assassins</title>
 </head>
-<body>
+<body class='person-bg'>
     <div>
-        <h1>Welcome, {{user_name}}!</h1>
-        Your nickname: <span class='highlight'>{{user_nick}}</span><br />
-        Your target: <span class='highlight'>{{target}}</span><br />
-        Your task: <span class='highlight'>{{task}}</span><br />
-        <a class='button' href=''>Contract completed</button>
+        <h1>Welcome, {{user_nick}}.</h1>
+        <p>Your task, should you choose to accept it, is to assassinate 
+            <span class='highlight'>{{target}}</span> by <span class='highlight'>{{task}}</span>.</p>
+        <p>Once you have completed your task, lock it in by clicking the button below.</p>
+        <a class='button' href='/assassin/{{token}}/kill/'>Contract completed</a>
     </div>
 </body>
 </html>
