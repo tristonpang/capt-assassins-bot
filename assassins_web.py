@@ -18,12 +18,13 @@ def index():
 @app.route("/assassins/<token>")
 def displayPage(token):
     cur = conn.cursor()
-    cur.execute("SELECT user_id, user_nickname, user_name FROM users WHERE user_password = %s", (token,))
+    cur.execute("SELECT user_id, user_nickname, user_name, user_alive FROM users WHERE user_password = %s", (token,))
     user_data = cur.fetchone()
     
     user_id = user_data[0]
     user_nickname = user_data[1]
     user_name = user_data[2]
+    user_alive = user_data[3]
     cur.execute("SELECT tasks.task_description, users.user_name FROM contracts INNER JOIN tasks ON tasks.task_id = \
         contracts.contract_taskID INNER JOIN users ON users.user_id = contracts.contract_targetID WHERE contracts.contract_assID = %s", (user_id,))
     task_data = cur.fetchone()
@@ -31,17 +32,19 @@ def displayPage(token):
     target_name = task_data[1]
 
     #slice data, add into return statement
-    return render_template("player-info.html", token = token, user_nick = user_nickname, user_name = user_name, task = task_desc, target = target_name)
+    return render_template("player-info.html", token = token, user_nick = user_nickname, user_name = user_name, task = task_desc, target = target_name, user_alive = user_alive)
 
 @app.route("/assassins/<token>/kill")
 def killPage(token):
     cur = conn.cursor()
     cur.execute("SELECT user_id FROM users WHERE user_password = %s", (token,))
     user_id = cur.fetchone()[0]
-    cur.execute("SELECT contract_targetID FROM contracts WHERE contract_assId = %s", (user_id,))
+    cur.execute("SELECT contract_id, contract_targetID FROM contracts WHERE contract_assId = %s", (user_id,))
     data = cur.fetchone()
-    target_id = data[0]
+    contract_id = data[0]
+    target_id = data[1]
     cur.execute("UPDATE users SET user_alive = FALSE WHERE user_id = %s", (target_id,))
+    cur.execute("UPDATE contracts SET contract_complete = now() WHERE contract_id = %s", (contract_id,))
     cur.execute("UPDATE contracts SET contract_assID = %s WHERE contract_assID = %s", (user_id, target_id))
     #set target's status to dead
     #set user's new target and task
