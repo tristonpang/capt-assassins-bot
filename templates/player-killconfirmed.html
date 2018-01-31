@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/player-style.css') }}">
+    <title>Dragon Assassins</title>
+</head>
+<body class='person-bg'>
+    <div>
+        <h1>Kill confirmed.</h1>
+        <p>Well done. You have successfully assassinated 
+            <span class='highlight'>{{dead_target}}</span>.</p>
+        <p>Congratulations.</p>
+    </div>
+</body>
+</html>
