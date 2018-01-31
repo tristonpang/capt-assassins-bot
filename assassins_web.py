@@ -47,7 +47,12 @@ def displayPage(token):
 def killPage(token):
     cur = conn.cursor()
     cur.execute("SELECT users.user_id, contracts.contract_id, contract_targetID \
-        FROM users INNER JOIN contracts ON users.user_id = contracts.contract_assId WHERE users.user_password = %s", (token,))
+        FROM users INNER JOIN contracts ON users.user_id = contracts.contract_assId \
+        WHERE contracts.contract_complete is null and users.user_password = %s", (token,))
+    data = cur.fetchone()
+    user_id = data[0]
+    contract_id = data[1]
+    target_id = data[2]
     cur.execute("UPDATE users SET user_alive = FALSE WHERE user_id = %s", (target_id,))
     # conn.commit()
     cur.execute("UPDATE contracts SET contract_complete = now() WHERE contract_id = %s", (contract_id,))
