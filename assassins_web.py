@@ -6,6 +6,7 @@ from telegram import teleBot
 cache = SimpleCache()
 
 conn = psycopg2.connect("host=localhost dbname=assassins user=assassins password=captslock")
+conn.autocommit = True
 
 app = Flask(__name__)
 app.register_blueprint(teleBot)
@@ -25,11 +26,19 @@ def displayPage(token):
     user_nickname = user_data[1]
     user_name = user_data[2]
     user_alive = user_data[3]
+
+    print(user_id)
     cur.execute("SELECT tasks.task_description, users.user_name FROM contracts INNER JOIN tasks ON tasks.task_id = \
-        contracts.contract_taskID INNER JOIN users ON users.user_id = contracts.contract_targetID WHERE contracts.contract_assID = %s", (user_id,))
-    task_data = cur.fetchone()
-    task_desc = task_data[0]
-    target_name = task_data[1]
+        contracts.contract_taskID INNER JOIN users ON users.user_id = contracts.contract_targetID WHERE \
+        contracts.contract_complete is null and contracts.contract_assID = %s", (user_id,))
+    
+    if not user_alive:
+        task_desc = None
+        target_name = None
+    else:
+        task_data = cur.fetchone()
+        task_desc = task_data[0]
+        target_name = task_data[1]
 
     #slice data, add into return statement
     return render_template("player-info.html", token = token, user_nick = user_nickname, user_name = user_name, task = task_desc, target = target_name, user_alive = user_alive)
@@ -37,18 +46,14 @@ def displayPage(token):
 @app.route("/assassins/<token>/kill")
 def killPage(token):
     cur = conn.cursor()
-    cur.execute("SELECT user_id FROM users WHERE user_password = %s", (token,))
-    user_id = cur.fetchone()[0]
-    cur.execute("SELECT contract_id, contract_targetID FROM contracts WHERE contract_assId = %s", (user_id,))
-    data = cur.fetchone()
-    contract_id = data[0]
-    target_id = data[1]
+    cur.execute("SELECT users.user_id, contracts.contract_id, contract_targetID \
+        FROM users INNER JOIN contracts ON users.user_id = contracts.contract_assId WHERE users.user_password = %s", (token,))
     cur.execute("UPDATE users SET user_alive = FALSE WHERE user_id = %s", (target_id,))
-    cur.commit()
+    # conn.commit()
     cur.execute("UPDATE contracts SET contract_complete = now() WHERE contract_id = %s", (contract_id,))
-    cur.commit()
+    # conn.commit()
     cur.execute("UPDATE contracts SET contract_assID = %s WHERE contract_assID = %s", (user_id, target_id))
-    cur.commit()
+    # conn.commit()
     #set target's status to dead
     #set user's new target and task
     cur.execute("SELECT user_name FROM users WHERE user_id = %s", (target_id,))
