@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
+    <link rel="stylesheet" href="../static/normalize.css">
+    <link rel="stylesheet" href="../static/admin-style.css">
+    <title>Dragon Assassins</title>
+</head>
+<body>
+    <div>
+        <form action='' method='POST' onsubmit='return submitForm();'>
+        <div>
+            <p style = "font-size: 25px"> <b>Add Player</b> </p> <br/>Please enter:
+        </div>
+        <div>
+            Player token:
+            <input type='text' name='token' id='token'>
+        </div>
+        <div>
+            Name:
+            <input type='text' name='name' id='name'>
+        </div>
+        <div>
+            Nickname:
+            <input type='text' name='nickname' id='nickname'>
+        </div>
+        <div>
+            Task:
+            <input type='text' name='task' id='task'>
+        </div>
+        <div>
+            Target:
+            <input type='text' name='target' id='target'>
+        </div>
+
+        <div>
+            <input type='submit' value='Submit' class='button' onclick''>
+        </div>
+        </form>
+        <div>
+            <input type='submit' value='Back to admin page' class='button' onclick="return back();">
+        </div>
+    </div>
+
+    <script>
+        function submitForm() {
+            window.location.href = "/assassins/admin/addplayer" ;
+            return false;
+        }
+        function back(){
+            window.location.href = "/assassins/admin";
+        }
+    </script>
+</body>
+</html>
