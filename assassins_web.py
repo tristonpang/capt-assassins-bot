@@ -35,7 +35,9 @@ def displayPage(token):
 @app.route("/assassins/<token>/kill")
 def killPage(token):
     cur = conn.cursor()
-    cur.execute("SELECT contract_id, contract_targetID, contract_taskID FROM contracts WHERE contract_assId = %s", (token,))
+    cur.execute("SELECT user_id FROM users WHERE user_password = %s", (token,))
+    user_id = cur.fetchone()[0];
+    cur.execute("SELECT contract_id, contract_targetID, contract_taskID FROM contracts WHERE contract_assId = %s", (user_id,));
     data = cur.fetchone()
     target_id = data[0]
     next_target_id = data[1] 
