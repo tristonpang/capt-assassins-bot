@@ -30,22 +30,21 @@
             <state relative-caret-position="0">
               <caret line="1" column="8" lean-forward="false" selection-start-line="1" selection-start-column="8" selection-end-line="1" selection-end-column="8" />
               <folding>
-                <marker date="1517329852162" expanded="true" signature="526:602" ph="SELECT user_... users" />
-                <marker date="1517329852162" expanded="true" signature="757:990" ph="SELECT tasks... contracts" />
-                <marker date="1517329852162" expanded="true" signature="1372:1467" ph="SELECT contr... contracts" />
-                <marker date="1517329852162" expanded="true" signature="1604:1658" ph="UPDATE users... " />
-                <marker date="1517329852162" expanded="true" signature="1692:1780" ph="UPDATE contracts... " />
-                <marker date="1517329852162" expanded="true" signature="1908:1954" ph="SELECT user_... users" />
+                <marker date="1517400476316" expanded="true" signature="1294:1351" ph="..." />
+                <marker date="1517400476316" expanded="true" signature="1453:1548" ph="SELECT contr... contracts" />
+                <marker date="1517400476316" expanded="true" signature="1685:1739" ph="UPDATE users... " />
+                <marker date="1517400476316" expanded="true" signature="1773:1861" ph="UPDATE contracts... " />
+                <marker date="1517400476316" expanded="true" signature="1989:2035" ph="SELECT user_... users" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="admin-info.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="admin-info.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/admin-info.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="68" column="0" lean-forward="true" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
+            <state relative-caret-position="17">
+              <caret line="1" column="16" lean-forward="true" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="16" />
               <folding>
                 <element signature="n#style#0;n#p#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
@@ -53,11 +52,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="admin-add.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="admin-add.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/admin-add.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="15" column="64" lean-forward="true" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="64" />
+            <state relative-caret-position="68">
+              <caret line="15" column="83" lean-forward="true" selection-start-line="15" selection-start-column="83" selection-end-line="15" selection-end-column="83" />
               <folding>
                 <element signature="n#style#0;n#p#0;n#div#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
@@ -68,8 +67,8 @@
       <file leaf-file-name="admin-delete.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/admin-delete.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="23" column="15" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+            <state relative-caret-position="119">
+              <caret line="7" column="47" lean-forward="false" selection-start-line="7" selection-start-column="47" selection-end-line="7" selection-end-column="47" />
               <folding>
                 <element signature="n#style#0;n#p#0;n#div#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
@@ -80,8 +79,8 @@
       <file leaf-file-name="admin-revive.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/admin-revive.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="22" column="21" lean-forward="true" selection-start-line="22" selection-start-column="21" selection-end-line="22" selection-end-column="21" />
+            <state relative-caret-position="119">
+              <caret line="7" column="47" lean-forward="false" selection-start-line="7" selection-start-column="47" selection-end-line="7" selection-end-column="47" />
               <folding>
                 <element signature="n#style#0;n#p#0;n#div#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
@@ -93,17 +92,7 @@
         <entry file="file://$PROJECT_DIR$/templates/player-login.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="119">
-              <caret line="7" column="58" lean-forward="true" selection-start-line="7" selection-start-column="58" selection-end-line="7" selection-end-column="58" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="player-style.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/player-style.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="10" column="23" lean-forward="false" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
+              <caret line="7" column="58" lean-forward="false" selection-start-line="7" selection-start-column="58" selection-end-line="7" selection-end-column="58" />
               <folding />
             </state>
           </provider>
@@ -112,15 +101,15 @@
       <file leaf-file-name="player-info.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/player-info.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="20" column="7" lean-forward="true" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
+            <state relative-caret-position="187">
+              <caret line="11" column="24" lean-forward="true" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="admin-style.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/admin-style.css">
+        <entry file="file://$PROJECT_DIR$/static/css/admin-style.css">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-68">
               <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
@@ -204,6 +193,18 @@
             <path>
               <item name="capt-assassins-bot" type="b2602c69:ProjectViewProjectNode" />
               <item name="capt-assassins-bot" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="capt-assassins-bot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="capt-assassins-bot" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="imgs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="capt-assassins-bot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="capt-assassins-bot" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -219,6 +220,11 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\yilun\Documents\capt-assassins-bot\static\css" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -350,15 +356,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/player-info.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" column="7" lean-forward="true" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/admin-style.css">
+    <entry file="file://$PROJECT_DIR$/static/css/admin-style.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-68">
           <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
@@ -377,7 +375,7 @@
     <entry file="file://$PROJECT_DIR$/templates/player-login.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
-          <caret line="7" column="58" lean-forward="true" selection-start-line="7" selection-start-column="58" selection-end-line="7" selection-end-column="58" />
+          <caret line="7" column="58" lean-forward="false" selection-start-line="7" selection-start-column="58" selection-end-line="7" selection-end-column="58" />
           <folding />
         </state>
       </provider>
@@ -387,40 +385,37 @@
         <state relative-caret-position="0">
           <caret line="1" column="8" lean-forward="false" selection-start-line="1" selection-start-column="8" selection-end-line="1" selection-end-column="8" />
           <folding>
-            <marker date="1517329852162" expanded="true" signature="526:602" ph="SELECT user_... users" />
-            <marker date="1517329852162" expanded="true" signature="757:990" ph="SELECT tasks... contracts" />
-            <marker date="1517329852162" expanded="true" signature="1372:1467" ph="SELECT contr... contracts" />
-            <marker date="1517329852162" expanded="true" signature="1604:1658" ph="UPDATE users... " />
-            <marker date="1517329852162" expanded="true" signature="1692:1780" ph="UPDATE contracts... " />
-            <marker date="1517329852162" expanded="true" signature="1908:1954" ph="SELECT user_... users" />
+            <marker date="1517400476316" expanded="true" signature="1294:1351" ph="..." />
+            <marker date="1517400476316" expanded="true" signature="1453:1548" ph="SELECT contr... contracts" />
+            <marker date="1517400476316" expanded="true" signature="1685:1739" ph="UPDATE users... " />
+            <marker date="1517400476316" expanded="true" signature="1773:1861" ph="UPDATE contracts... " />
+            <marker date="1517400476316" expanded="true" signature="1989:2035" ph="SELECT user_... users" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/player-info.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="24" lean-forward="true" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/admin-revive.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="47" lean-forward="false" selection-start-line="7" selection-start-column="47" selection-end-line="7" selection-end-column="47" />
+          <folding>
+            <element signature="n#style#0;n#p#0;n#div#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/admin-delete.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="15" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
-          <folding>
-            <element signature="n#style#0;n#p#0;n#div#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/admin-revive.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="22" column="21" lean-forward="true" selection-start-line="22" selection-start-column="21" selection-end-line="22" selection-end-column="21" />
-          <folding>
-            <element signature="n#style#0;n#p#0;n#div#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/admin-add.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="64" lean-forward="true" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="64" />
+        <state relative-caret-position="119">
+          <caret line="7" column="47" lean-forward="false" selection-start-line="7" selection-start-column="47" selection-end-line="7" selection-end-column="47" />
           <folding>
             <element signature="n#style#0;n#p#0;n#div#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
@@ -429,10 +424,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/admin-info.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="68" column="0" lean-forward="true" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
+        <state relative-caret-position="17">
+          <caret line="1" column="16" lean-forward="true" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="16" />
           <folding>
             <element signature="n#style#0;n#p#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/admin-add.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="15" column="83" lean-forward="true" selection-start-line="15" selection-start-column="83" selection-end-line="15" selection-end-column="83" />
+          <folding>
+            <element signature="n#style#0;n#p#0;n#div#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
