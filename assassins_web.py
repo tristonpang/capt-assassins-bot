@@ -25,12 +25,9 @@ def displayPage(token):
     user_id = user_data[0]
     user_nickname = user_data[1]
     user_name = user_data[2]
-<<<<<<< HEAD
     user_alive = user_data[3]
 
     print(user_id)
-=======
->>>>>>> 7e40efef291fa655a7006328f3eec1a63a35cb75
     cur.execute("SELECT tasks.task_description, users.user_name FROM contracts INNER JOIN tasks ON tasks.task_id = \
         contracts.contract_taskID INNER JOIN users ON users.user_id = contracts.contract_targetID WHERE \
         contracts.contract_complete is null and contracts.contract_assID = %s", (user_id,))
