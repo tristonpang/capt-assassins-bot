@@ -1,6 +1,15 @@
 import requests
+from flask import Blueprint, request
 
-###url = "https://api.telegram.org/bot454094709:AAHlLv5OfquuiTfZ7aGMG9l7-5uhJh_VZxU/"
+url = "https://api.telegram.org/bot454094709:AAHlLv5OfquuiTfZ7aGMG9l7-5uhJh_VZxU/"
+
+teleBot = Blueprint('teleBot', __name__, template_folder='templates')
+
+@teleBot.route('/assassins/telegram/update/')
+def telegramUpdate():
+    data = request.get_json()
+    print(data)
+    return '{"status": "ok"}'
 
 '''Takes in url(request) and gets response data. Returns in json format'''
 def get_updates_json(request):
@@ -36,28 +45,28 @@ def process_request(update):
     else:
         send_msg(chat_id, "Default response")
 
-chat_id = get_chat_id(last_update(get_updates_json(url)))
+# chat_id = get_chat_id(last_update(get_updates_json(url)))
 
-send_msg(chat_id, "Hello world! Assassin's Bot script started!")
+# send_msg(chat_id, "Hello world! Assassin's Bot script started!")
 
-def main():
-    last_seen_update_id = last_update(get_updates_json(url))["update_id"]
-    while True:
-        poll_id = last_update(get_updates_json(url))["update_id"]
-        if last_seen_update_id != poll_id:
-            updates = get_updates_json(url)["result"]
-            updates = list(filter(lambda x:x["update_id"] > last_seen_update_id, updates))
+# def main():
+#     last_seen_update_id = last_update(get_updates_json(url))["update_id"]
+#     while True:
+#         poll_id = last_update(get_updates_json(url))["update_id"]
+#         if last_seen_update_id != poll_id:
+#             updates = get_updates_json(url)["result"]
+#             updates = list(filter(lambda x:x["update_id"] > last_seen_update_id, updates))
             
-            for update in updates:
-                process_request(update)
+#             for update in updates:
+#                 process_request(update)
 
-            last_seen_update_id = poll_id
+#             last_seen_update_id = poll_id
 
             
         
 
-if __name__ == '__main__':
-    try:
-        main()
-    except KeyboardInterrupt:
-        exit()
+# if __name__ == '__main__':
+#     try:
+#         main()
+#     except KeyboardInterrupt:
+#         exit()

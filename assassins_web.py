@@ -1,13 +1,14 @@
 from flask import Flask, render_template, url_for, request, redirect, Response, jsonify
 import psycopg2
-
 from werkzeug.contrib.cache import SimpleCache
+from telegram import teleBot
 
 cache = SimpleCache()
 
 conn = psycopg2.connect("host=localhost dbname=assassins user=assassins password=captslock")
 
 app = Flask(__name__)
+app.register_blueprint(teleBot)
 #cache = Client(('https://yenter.io/', 11211))
 
 @app.route("/assassins/")
@@ -30,7 +31,7 @@ def displayPage(token):
     target_name = task_data[1]
 
     #slice data, add into return statement
-    return render_template("player-info.html", user_nick = user_nickname, user_name = user_name, task = task_desc, target = target_name)
+    return render_template("player-info.html", token = token, user_nick = user_nickname, user_name = user_name, task = task_desc, target = target_name)
 
 @app.route("/assassins/<token>/kill")
 def killPage(token):
