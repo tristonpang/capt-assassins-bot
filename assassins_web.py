@@ -44,8 +44,11 @@ def killPage(token):
     contract_id = data[0]
     target_id = data[1]
     cur.execute("UPDATE users SET user_alive = FALSE WHERE user_id = %s", (target_id,))
+    cur.commit()
     cur.execute("UPDATE contracts SET contract_complete = now() WHERE contract_id = %s", (contract_id,))
+    cur.commit()
     cur.execute("UPDATE contracts SET contract_assID = %s WHERE contract_assID = %s", (user_id, target_id))
+    cur.commit()
     #set target's status to dead
     #set user's new target and task
     cur.execute("SELECT user_name FROM users WHERE user_id = %s", (target_id,))
