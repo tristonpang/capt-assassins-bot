@@ -1,7 +1,7 @@
 from flask import Flask, render_template, url_for, request, redirect, Response, jsonify
 import psycopg2
-
 from werkzeug.contrib.cache import SimpleCache
+from telegram import teleBot
 
 cache = SimpleCache()
 
