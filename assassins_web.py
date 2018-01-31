@@ -37,14 +37,12 @@ def displayPage(token):
 def killPage(token):
     cur = conn.cursor()
     cur.execute("SELECT user_id FROM users WHERE user_password = %s", (token,))
-    user_id = cur.fetchone()[0];
-    cur.execute("SELECT contract_id, contract_targetID, contract_taskID FROM contracts WHERE contract_assId = %s", (user_id,));
+    user_id = cur.fetchone()[0]
+    cur.execute("SELECT contract_targetID FROM contracts WHERE contract_assId = %s", (user_id,))
     data = cur.fetchone()
     target_id = data[0]
-    next_target_id = data[1] 
-    next_task_id = data[2]
     cur.execute("UPDATE users SET user_alive = FALSE WHERE user_id = %s", (target_id,))
-    cur.execute("UPDATE contracts SET contract_targetID = %s, contract_taskID = %s WHERE contract_id = %s", (next_target_id, next_task_id, user_id))
+    cur.execute("UPDATE contracts SET contract_assID = %s WHERE contract_assID = %s", (user_id, target_id))
     #set target's status to dead
     #set user's new target and task
     cur.execute("SELECT user_name FROM users WHERE user_id = %s", (target_id,))
