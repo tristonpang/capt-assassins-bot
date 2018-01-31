@@ -8,6 +8,7 @@ cache = SimpleCache()
 conn = psycopg2.connect("host=localhost dbname=assassins user=assassins password=captslock")
 
 app = Flask(__name__)
+app.register_blueprint(teleBot)
 #cache = Client(('https://yenter.io/', 11211))
 
 @app.route("/assassins/")
