@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/normalize.css">
+    <link rel="stylesheet" href="../static/css/admin-style.css">
+    <title>Dragon Assassins</title>
+</head>
+<body>
+    <div>
+        <form action='' method='POST' onsubmit='return submitForm();'>
+        <div>
+            <p style = "font-size: 25px"> <b>Revive Player</b> </p> <br/>Please enter:
+        </div>
+        <div>
+            Player Token:
+            <input type='text' name='token' id='token'>
+        </div>
+        <div>
+            New Task:
+            <input type='text' name='task' id='task'>
+        </div>
+        <div>
+            New Target:
+            <input type='text' name='target' id='target'>
+        </div>
+        <div>
+            <input type='submit' value='Submit' class='button' onclick''>
+        </div>
+        </form>
+        <div>
+            <input type='submit' value='Back to admin page' class='button' onclick="return back();">
+        </div>
+    </div>
+
+    <script>
+        function submitForm() {
+            window.location.href = "/assassins/admin/reviveplayer" ;
+            return false;
+        }
+        function back(){
+            window.location.href = "/assassins/admin";
+        }
+    </script>
+</body>
+</html>

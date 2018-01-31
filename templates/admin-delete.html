@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/normalize.css">
+    <link rel="stylesheet" href="../static/css/admin-style.css">
+    <title>Dragon Assassins</title>
+</head>
+<body>
+    <div>
+        <form action='' method='POST' onsubmit='return submitForm();'>
+        <div>
+            <p style = "font-size: 25px"> <b>Delete Player</b> </p> <br/>Please enter the player token:
+        </div>
+        <div>
+            <input type='text' name='token' id='token'>
+        </div>
+        <div>
+            <input type='submit' value='Submit' class='button' onclick''>
+        </div>
+        </form>
+        <div>
+            <input type='submit' value='Back to admin page' class='button' onclick="return back();">
+        </div>
+    </div>
+
+    <script>
+        function submitForm() {
+            window.location.href = "/assassins/admin/deleteplayer" ;
+            return false;
+        }
+        function back(){
+            window.location.href = "/assassins/admin";
+        }
+    </script>
+</body>
+</html>
