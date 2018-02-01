@@ -24,17 +24,18 @@ def displayPage(token):
     user_name = user_data[2]
     user_alive = user_data[3]
     user_telegram = user_data[4]
+    user_hash = None
 
     if user_telegram is None:
         # User has not yet added their telegram
         # Ask them to do so
-        requestTele = True
+        # requestTele = True
         # Generate random hash to associate with this user
         # Store in table
         user_hash = "%032x" % random.getrandbits(128)
-        cur.execute("UPDATE tele_hash = %s FROM tele_ids WHERE user_id = %s", (user_hash, user_id))
-    else:
-        requestTele = False
+        # cur.execute("UPDATE tele_ids SET tele_hash = %s WHERE user_id = %s", (user_hash, user_id))
+        cur.execute("INSERT INTO tele_ids (user_id, tele_hash) VALUES (%s, %s) ON CONFLICT \
+        (user_id) DO UPDATE SET tele_hash = excluded.tele_hash", (user_hash, user_id))
 
     if not user_alive:
         task_desc = None
@@ -49,7 +50,7 @@ def displayPage(token):
 
     #slice data, add into return statement
     return render_template("player-info.html", token = token, user_alive = user_alive, 
-        user_nick = user_nickname, user_name = user_name, task = task_desc, target = target_name, request_tele = requestTele, user_hash = user_hash)
+        user_nick = user_nickname, user_name = user_name, task = task_desc, target = target_name, user_hash = user_hash)
 
 @usersEndpoints.route("/assassins/<token>/kill")
 def killPage(token):

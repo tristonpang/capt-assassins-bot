@@ -14,11 +14,11 @@
 <body class='person-bg'>
     <div>
         <h1>Welcome, {{user_nick}}.</h1>
-        {% if request_tele %}
+        {% if user_hash %}
             <div class='tele-blurb'>
             <p>It looks like you have yet to link your Telegram account! You'll need to do it in 
                 order to receive personalised notifications for the game.</p>
-            <a class='button tele-button' href=''><i class='fab fa-telegram-plane'></i>&nbsp;&nbsp;Link Telegram Account</a>
+            <a class='button tele-button' href='https://telegram.me/capt_assassins_bot?start={{user_hash}}'><i class='fab fa-telegram-plane'></i>&nbsp;&nbsp;Link Telegram Account</a>
             </div>
         {% endif %}
         {% if user_alive %}

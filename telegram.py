@@ -17,6 +17,7 @@ teleBot = Blueprint('teleBot', __name__, template_folder='templates')
 def telegramUpdate():
     data = request.get_json()
     chatID = data["message"]["chat"]["id"]
+    print(data)
     if chatID not in ids:
         ids.add(chatID)
     if "text" in data["message"] and data["message"]["text"][0:7] == "/status":
