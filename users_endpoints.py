@@ -70,12 +70,14 @@ def killPage(token):
     # conn.commit()
     #set target's status to dead
     #set user's new target and task
-    cur.execute("SELECT user_name FROM users WHERE user_id = %s", (target_id,))
-    old_target_name = cur.fetchone()[0]
+    cur.execute("SELECT user_name, user_telegram FROM users WHERE user_id = %s", (target_id,))
+    data = cur.fetchone()
+    old_target_name = data[0]
+    target_chat_id = data[1]
 
     #inform target that he/she is dead
-    cur.execute("SELECT user_telegram FROM users WHERE user_id = %s", (target_id,))
-    target_chat_id = cur.fetchone()
+    # cur.execute("SELECT user_telegram FROM users WHERE user_id = %s", (target_id,))
+    # target_chat_id = cur.fetchone()
     if target_chat_id != None:
         message = "You have been killed by " + user_nickname + "!"
         sendMsg(target_chat_id, message)
