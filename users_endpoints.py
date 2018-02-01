@@ -4,6 +4,7 @@ import psycopg2
 from datetime import datetime
 from private_vars import telegramBotURL, conn
 import random
+from telegram import sendMsg
 
 # from flask_cache import Cache
 
@@ -53,13 +54,14 @@ def displayPage(token):
 @usersEndpoints.route("/assassins/<token>/kill")
 def killPage(token):
     cur = conn.cursor()
-    cur.execute("SELECT users.user_id, contracts.contract_id, contract_targetID \
+    cur.execute("SELECT users.user_id, contracts.contract_id, contract_targetID, users.user_nickname \
         FROM users INNER JOIN contracts ON users.user_id = contracts.contract_assId \
         WHERE contracts.contract_complete is null and users.user_password = %s", (token,))
     data = cur.fetchone()
     user_id = data[0]
     contract_id = data[1]
     target_id = data[2]
+    user_nickname = data[3]
     cur.execute("UPDATE users SET user_alive = FALSE WHERE user_id = %s", (target_id,))
     # conn.commit()
     cur.execute("UPDATE contracts SET contract_complete = now() WHERE contract_id = %s", (contract_id,))
@@ -70,4 +72,12 @@ def killPage(token):
     #set user's new target and task
     cur.execute("SELECT user_name FROM users WHERE user_id = %s", (target_id,))
     old_target_name = cur.fetchone()[0]
+
+    #inform target that he/she is dead
+    cur.execute("SELECT user_telegram FROM users WHERE user_id = %s", (target_id,))
+    target_chat_id = cur.fetchone()
+    if target_chat_id != None:
+        message = "You have been killed by " + user_nickname + "!"
+        sendMsg(target_chat_id, message)
+
     return render_template("player-killconfirmed.html", dead_target = old_target_name)
