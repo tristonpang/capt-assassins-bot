@@ -49,6 +49,9 @@ def telegramUpdate():
         for contract in completedContracts:
             outputStr += contract[0] + " killed " + contract[1] + " by " + contract[2] + " ("+contract[3].strftime("%a %d %b, %I:%M %p")+")\n"
         sendMsg(chatID, outputStr)
+    #elif "text" in data["message"] and data["message"]["text"][0:6] == "/start":
+
+
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
 def sendMsg(id, msg):
