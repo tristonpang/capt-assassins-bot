@@ -10,12 +10,14 @@ html, body {
 .person-bg {
     background-image: url("../imgs/man-on-bridge.jpg");
     background-size: cover;
+    background-position: center;
     align-items: flex-start;
 }
 
 .laptop-bg {
     background-image: url("../imgs/laptop.jpg");
     background-size: cover;
+    background-position: center;
 }
 
 body {
@@ -67,6 +69,11 @@ input {
     border-bottom: 5px solid #6d322c;
     color: white;
     text-decoration: none;
+}
+
+.tele-button {
+    background-color: #1a8dff;
+    border-bottom:5px solid #185ca0;
 }
 
 button {
