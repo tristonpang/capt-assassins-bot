@@ -3,6 +3,7 @@ from flask import Blueprint, request, render_template
 import psycopg2
 from datetime import datetime
 from private_vars import telegramBotURL, conn
+import random
 
 # from flask_cache import Cache
 
@@ -28,6 +29,10 @@ def displayPage(token):
         # User has not yet added their telegram
         # Ask them to do so
         requestTele = True
+        # Generate random hash to associate with this user
+        # Store in table
+        user_hash = "%032x" % random.getrandbits(128)
+        cur.execute("UPDATE tele_hash = %s FROM tele_ids WHERE user_id = %s", (user_hash, user_id))
     else:
         requestTele = False
 
@@ -44,7 +49,7 @@ def displayPage(token):
 
     #slice data, add into return statement
     return render_template("player-info.html", token = token, user_alive = user_alive, 
-        user_nick = user_nickname, user_name = user_name, task = task_desc, target = target_name, request_tele = requestTele)
+        user_nick = user_nickname, user_name = user_name, task = task_desc, target = target_name, request_tele = requestTele, user_hash = user_hash)
 
 @usersEndpoints.route("/assassins/<token>/kill")
 def killPage(token):

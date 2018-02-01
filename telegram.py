@@ -49,7 +49,12 @@ def telegramUpdate():
         for contract in completedContracts:
             outputStr += contract[0] + " killed " + contract[1] + " by " + contract[2] + " ("+contract[3].strftime("%a %d %b, %I:%M %p")+")\n"
         sendMsg(chatID, outputStr)
-    #elif "text" in data["message"] and data["message"]["text"][0:6] == "/start":
+    elif "text" in data["message"] and data["message"]["text"][0:6] == "/start":
+        user_hash = data["message"]["text"][7:]
+        #retrieve associated user_id, store tele_chat_id
+        cur.execute("SELECT user_id FROM tele_ids WHERE tele_hash = %s", (user_hash,))
+        user_id = cur.fetchone()[0]
+        cur.execute("UPDATE user_telegram = %s FROM users WHERE user_id = %s", (chatID, user_id,))
 
 
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
