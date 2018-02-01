@@ -79,7 +79,7 @@ def killPage(token):
     # cur.execute("SELECT user_telegram FROM users WHERE user_id = %s", (target_id,))
     # target_chat_id = cur.fetchone()
     if target_chat_id != None:
-        message = "You have been killed by " + user_nickname + "!"
+        message = "*Oh no!* You have been killed by _" + user_nickname + "_!"
         sendMsg(target_chat_id, message)
 
     return render_template("player-killconfirmed.html", dead_target = old_target_name)
