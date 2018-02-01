@@ -29,13 +29,11 @@ def displayPage(token):
     if user_telegram is None:
         # User has not yet added their telegram
         # Ask them to do so
-        # requestTele = True
         # Generate random hash to associate with this user
         # Store in table
         user_hash = "%032x" % random.getrandbits(128)
-        # cur.execute("UPDATE tele_ids SET tele_hash = %s WHERE user_id = %s", (user_hash, user_id))
         cur.execute("INSERT INTO tele_ids (user_id, tele_hash) VALUES (%s, %s) ON CONFLICT \
-        (user_id) DO UPDATE SET tele_hash = excluded.tele_hash", (user_hash, user_id))
+        (user_id) DO UPDATE SET tele_hash = excluded.tele_hash", (user_id, user_hash))
 
     if not user_alive:
         task_desc = None

@@ -13,6 +13,8 @@ teleBot = Blueprint('teleBot', __name__, template_folder='templates')
 # cache = SimpleCache()
 # cache = Cache(config={'CACHE_TYPE': 'filesystem', 'CACHE_DIR': '/'})
 
+cur = conn.cursor()
+
 @teleBot.route('/assassins/telegram/update/', methods = ["POST"])
 def telegramUpdate():
     data = request.get_json()
@@ -24,7 +26,6 @@ def telegramUpdate():
         # Send update
         print("Received status update request")
         # Fetch status
-        cur = conn.cursor()
         cur.execute("SELECT users.user_nickname, users.user_alive, count(contracts.contract_complete) FROM users LEFT JOIN contracts ON users.user_id = contracts.contract_assid GROUP BY users.user_id ORDER BY users.user_alive DESC, users.user_nickname")
         users = cur.fetchall()
         outputStr = "*Current Players*\n"
@@ -55,9 +56,8 @@ def telegramUpdate():
         #retrieve associated user_id, store tele_chat_id
         cur.execute("SELECT user_id FROM tele_ids WHERE tele_hash = %s", (user_hash,))
         user_id = cur.fetchone()[0]
-        cur.execute("UPDATE user_telegram = %s FROM users WHERE user_id = %s", (chatID, user_id,))
-
-
+        cur.execute("UPDATE users SET user_telegram = %s WHERE user_id = %s", (chatID, user_id,))
+        cur.execute("DELETE FROM tele_ids WHERE user_id = %s", (user_id,))
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
 def sendMsg(id, msg):
