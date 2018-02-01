@@ -96,4 +96,6 @@ button {
     padding: 3px 8px;
     display: inline-block;
     margin: 2px 2px;
+    display: inline;
+    white-space: pre-wrap;
 }
