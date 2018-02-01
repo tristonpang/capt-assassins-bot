@@ -2,7 +2,7 @@ import requests, json
 from flask import Blueprint, request
 import psycopg2
 from datetime import datetime
-from private_vars import url, conn
+from private_vars import telegramBotURL, conn
 
 # from flask_cache import Cache
 
@@ -56,6 +56,6 @@ def telegramUpdate():
 
 def sendMsg(id, msg):
     r = requests.post(
-        url+"sendMessage", 
+        telegramBotURL+"sendMessage", 
         data = {"chat_id": id, "text": msg, "parse_mode" : "Markdown"})
     print(r.text)

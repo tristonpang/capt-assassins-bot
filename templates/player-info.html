@@ -7,11 +7,20 @@
     <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename = 'css/normalize.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename = 'css/player-style.css') }}">
+    <script src="https://use.fontawesome.com/releases/v5.0.6/js/brands.js"></script>
+    <script src="https://use.fontawesome.com/releases/v5.0.6/js/fontawesome.js"></script>
     <title>Dragon Assassins</title>
 </head>
 <body class='person-bg'>
     <div>
         <h1>Welcome, {{user_nick}}.</h1>
+        {% if request_tele %}
+            <div class='tele-blurb'>
+            <p>It looks like you have yet to link your Telegram account! You'll need to do it in 
+                order to receive personalised notifications for the game.</p>
+            <a class='button tele-button' href=''><i class='fab fa-telegram-plane'></i>&nbsp;&nbsp;Link Telegram Account</a>
+            </div>
+        {% endif %}
         {% if user_alive %}
         <p>Your mission, should you choose to accept it, is to assassinate 
             <span class='highlight'>{{target}}</span> by <span class='highlight'>{{task}}</span>.</p>
@@ -21,6 +30,7 @@
         <p>You have unfortunately been assassinated :(</p>
         <p>Keep a lookout for any revival opportunities!</p>
         {% endif %}
+
     </div>
 </body>
 </html>
