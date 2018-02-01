@@ -2,11 +2,10 @@ from flask import Flask, render_template, url_for, request, redirect, Response, 
 import psycopg2
 from werkzeug.contrib.cache import SimpleCache
 from telegram import teleBot
+from private_vars import conn
 
 cache = SimpleCache()
 
-conn = psycopg2.connect("host=localhost dbname=assassins user=assassins password=captslock")
-conn.autocommit = True
 
 app = Flask(__name__)
 app.register_blueprint(teleBot)

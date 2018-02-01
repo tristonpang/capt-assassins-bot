@@ -2,14 +2,14 @@ import requests, json
 from flask import Blueprint, request
 import psycopg2
 from datetime import datetime
+from private_vars import url, conn
 
 # from flask_cache import Cache
 
-url = "https://api.telegram.org/bot454094709:AAHlLv5OfquuiTfZ7aGMG9l7-5uhJh_VZxU/"
 ids = set()
 
 teleBot = Blueprint('teleBot', __name__, template_folder='templates')
-conn = psycopg2.connect("host=localhost dbname=assassins user=assassins password=captslock")
+
 # cache = SimpleCache()
 # cache = Cache(config={'CACHE_TYPE': 'filesystem', 'CACHE_DIR': '/'})
 
