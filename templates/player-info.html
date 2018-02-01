@@ -14,8 +14,13 @@
 <body class='person-bg'>
     <div>
         <h1>Welcome, {{user_nick}}.</h1>
+<<<<<<< HEAD
         {% if request_tele %}
             <div class='tele-blurb'>
+=======
+
+      {% if request_tele %}
+>>>>>>> 8edc29de938c613656cfbc40b347b787c8aaa691
             <p>It looks like you have yet to link your Telegram account! You'll need to do it in 
                 order to receive personalised notifications for the game.</p>
             <a class='button tele-button' href=''><i class='fab fa-telegram-plane'></i>&nbsp;&nbsp;Link Telegram Account</a>
@@ -30,6 +35,7 @@
         <p>You have unfortunately been assassinated :(</p>
         <p>Keep a lookout for any revival opportunities!</p>
         {% endif %}
+
     </div>
 </body>
 </html>
