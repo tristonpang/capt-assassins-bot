@@ -27,22 +27,24 @@ def displayPage(token):
     if user_telegram is None:
         # User has not yet added their telegram
         # Ask them to do so
-        return render_template("player-info.html", request_tele = True, user_nick = user_nickname)
+        requestTele = True
     else:
-        if not user_alive:
-            task_desc = None
-            target_name = None
-        else:
-            cur.execute("SELECT tasks.task_description, users.user_name FROM contracts INNER JOIN tasks ON tasks.task_id = \
-            contracts.contract_taskID INNER JOIN users ON users.user_id = contracts.contract_targetID WHERE \
-            contracts.contract_complete is null and contracts.contract_assID = %s", (user_id,))
-            task_data = cur.fetchone()
-            task_desc = task_data[0]
-            target_name = task_data[1]
+        requestTele = False
 
-        #slice data, add into return statement
-        return render_template("player-info.html", token = token, user_alive = user_alive, 
-            user_nick = user_nickname, user_name = user_name, task = task_desc, target = target_name, request_tele = False)
+    if not user_alive:
+        task_desc = None
+        target_name = None
+    else:
+        cur.execute("SELECT tasks.task_description, users.user_name FROM contracts INNER JOIN tasks ON tasks.task_id = \
+        contracts.contract_taskID INNER JOIN users ON users.user_id = contracts.contract_targetID WHERE \
+        contracts.contract_complete is null and contracts.contract_assID = %s", (user_id,))
+        task_data = cur.fetchone()
+        task_desc = task_data[0]
+        target_name = task_data[1]
+
+    #slice data, add into return statement
+    return render_template("player-info.html", token = token, user_alive = user_alive, 
+        user_nick = user_nickname, user_name = user_name, task = task_desc, target = target_name, request_tele = requestTele)
 
 @usersEndpoints.route("/assassins/<token>/kill")
 def killPage(token):
