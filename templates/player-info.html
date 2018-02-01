@@ -12,11 +12,15 @@
 <body class='person-bg'>
     <div>
         <h1>Welcome, {{user_nick}}.</h1>
-        {% if  %}
+        {% if user_alive %}
         <p>Your mission, should you choose to accept it, is to assassinate 
             <span class='highlight'>{{target}}</span> by <span class='highlight'>{{task}}</span>.</p>
         <p>Once you have completed your task, lock it in by clicking the button below.</p>
         <a class='button' href='/assassins/{{token}}/kill'>Contract completed</a>
+        {% else %}
+        <p>You have unfortunately been assassinated :(</p>
+        <p>Keep a lookout for any revival opportunities!</p>
+        {% endif %}
     </div>
 </body>
 </html>
