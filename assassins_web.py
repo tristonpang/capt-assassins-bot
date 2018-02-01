@@ -19,7 +19,7 @@ def index():
 @app.route("/assassins/<token>")
 def displayPage(token):
     cur = conn.cursor()
-    cur.execute("SELECT user_id, user_nickname, user_name FROM users WHERE user_password = %s", (token,))
+    cur.execute("SELECT user_id, user_nickname, user_name, user_alive FROM users WHERE user_password = %s", (token,))
     user_data = cur.fetchone()
     
     user_id = user_data[0]

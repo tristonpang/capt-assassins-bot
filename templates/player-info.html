@@ -12,6 +12,7 @@
 <body class='person-bg'>
     <div>
         <h1>Welcome, {{user_nick}}.</h1>
+        {% if  %}
         <p>Your mission, should you choose to accept it, is to assassinate 
             <span class='highlight'>{{target}}</span> by <span class='highlight'>{{task}}</span>.</p>
         <p>Once you have completed your task, lock it in by clicking the button below.</p>
