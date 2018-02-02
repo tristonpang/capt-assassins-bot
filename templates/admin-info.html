@@ -27,21 +27,15 @@
                 <th scope = "col">Target</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-                <td>Yilun</td>
-                <td>MrWoofWoof</td>
-                <td>Eat Breakfast</td>
-                <td>Bao Jie</td>
-            </tr>
+            {% for row in data %}
+                <tr>
+                    {% for d in row %}
 
-            <tr>
-                <td>Bao Jie</td>
-                <td>Ellen</td>
-                <td>Go for a run</td>
-                <td>Annabel</td>
-            </tr>
-            </tbody>
+                        <td>{{ d }}</td>
+
+                    {% endfor %}
+                </tr>
+            {% endfor %}
         </table>
     </div>
 

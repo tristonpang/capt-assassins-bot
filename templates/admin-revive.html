@@ -12,27 +12,27 @@
 <body class = 'animus-bg'>
 <div>
     <div class="jumbotron">
-    <form action='/assassins/admin/reviveplayersubmit' method='POST'>
-        <div style="text-align: center">
-            <h1>Revive Player</h1>
+        <form action='/assassins/admin/reviveplayersubmit' method='POST'>
+            <div style="text-align: center">
+                <h1>Revive Player</h1>
+                <br>
+            </div>
+            <div class="form-group">
+
+                <label for="token">Token of player to revive</label>
+                <input type="token" class="form-control" id="token" placeholder="token">
+
+                <label for="target">New Target</label>
+                <input type="target" class="form-control" id="target" placeholder="target">
+
+                <label for="task">New Task</label>
+                <input type="task" class="form-control" id="task" placeholder="task">
+            </div>
             <br>
-        </div>
-        <div class="form-group">
-
-            <label for="token">Token of player to revive</label>
-            <input type="token" class="form-control" id="token" placeholder="token">
-
-            <label for="target">New Target</label>
-            <input type="target" class="form-control" id="target" placeholder="target">
-
-            <label for="task">New Task</label>
-            <input type="task" class="form-control" id="task" placeholder="task">
-        </div>
-        <br>
-        <div style="text-align: center">
-            <input type='submit' value='Submit' class='btn btn-danger' onclick="submitForm()">
-        </div>
-    </form>
+            <div style="text-align: center">
+                <input type='submit' value='Submit' class='btn btn-danger' onclick="submitForm()">
+            </div>
+        </form>
     </div>
     <br>
 

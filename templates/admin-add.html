@@ -13,32 +13,32 @@
 
 <div>
     <div class="jumbotron">
-    <form action='/assassins/admin/addplayersubmit' method='POST' >
-        <div style="text-align: center">
-            <h1>Add Player</h1>
+        <form action='/assassins/admin/addplayersubmit' method='POST' >
+            <div style="text-align: center">
+                <h1>Add Player</h1>
+                <br>
+            </div>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="name" class="form-control" id="name" placeholder="name">
+
+                <label for="nickname">Nickname</label>
+                <input type="nickname" class="form-control" id="nickname" placeholder="nickname">
+
+                <label for="token">Token</label>
+                <input type="token" class="form-control" id="token" placeholder="token">
+
+                <label for="target">Target</label>
+                <input type="target" class="form-control" id="target" placeholder="target">
+
+                <label for="task">Task</label>
+                <input type="task" class="form-control" id="task" placeholder="task">
+            </div>
             <br>
-        </div>
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="name" class="form-control" id="name" placeholder="name">
-
-            <label for="nickname">Nickname</label>
-            <input type="nickname" class="form-control" id="nickname" placeholder="nickname">
-
-            <label for="token">Token</label>
-            <input type="token" class="form-control" id="token" placeholder="token">
-
-            <label for="target">Target</label>
-            <input type="target" class="form-control" id="target" placeholder="target">
-
-            <label for="task">Task</label>
-            <input type="task" class="form-control" id="task" placeholder="task">
-        </div>
-        <br>
-        <div style="text-align: center">
-            <input type='submit' value='Submit' class='btn btn-danger' onclick="submitForm()">
-        </div>
-    </form>
+            <div style="text-align: center">
+                <input type='submit' value='Submit' class='btn btn-danger' onclick="submitForm()">
+            </div>
+        </form>
     </div>
     <br>
 
