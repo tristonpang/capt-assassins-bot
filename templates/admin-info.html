@@ -4,80 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
-<<<<<<< .merge_file_a01124
-    <link rel="stylesheet" href="../static/css/normalize.css">
-    <link rel="stylesheet" href="../static/css/admin-style.css">
-    <title>Dragon Assassins Admin</title>
-
-<style>
-#playerdata {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-}
-
-#playerdata td, #playerdata th {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-
-#playerdata tr:nth-child(even){background-color: #25e200;}
-
-#playerdata tr:hover {background-color: #53dd41;}
-
-#playerdata th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: rgba(173, 161, 175, 0);
-    color: white;
-}
-</style>
-</head>
-
-<body>
-<div>
-    <div>
-        <p style = "font-size: 25px"> <b>Hello Admin</b> </p>
-        </div>
-    <div>
-
-     <table id="playerdata">
-  <tr>
-    <th>Player</th>
-    <th>Nickname</th>
-    <th>Task</th>
-    <th>Target</th>
-  </tr>
-
-    <tr>
-        <td>Yilun</td>
-        <td>MrWoofWoof</td>
-        <td>Eat Breakfast</td>
-        <td>Bao Jie</td>
-    </tr>
-
-    <tr>
-        <td>Bao Jie</td>
-        <td>Ellen</td>
-        <td>Go for a run</td>
-        <td>Annabel</td>
-    </tr>
-
-        </table>
-          </div>
-
-        <div>
-        </br>
-            <input type='submit' value='Add Player' class='button' onclick="return addPlayer();">
-
-            <input type='submit' value='Delete Player' class='button' onclick="return deletePlayer();">
-
-            <input type='submit' value='Revive Player' class='button' onclick="return revivePlayer();">
-        </div>
-
-=======
     <link rel="stylesheet" href="../static/css/admin-custom-min.css">
     <link rel="stylesheet" href="../static/css/admin-style.css" media="screen">
     <title>Dragon Assassins Admin</title>
@@ -125,30 +51,9 @@
 
         <input type='submit' value='Revive Player' class='btn btn-danger' onclick="return revivePlayer();">
     </div>
->>>>>>> .merge_file_a02188
-
 </div>
-
 </body>
 
-<<<<<<< .merge_file_a01124
-    <script>
-        function addPlayer() {
-            window.location.href = "/assassins/admin/addplayer";
-            return false;
-        }
-
-        function deletePlayer() {
-            window.location.href = "/assassins/admin/deleteplayer";
-            return false;
-        }
-
-        function revivePlayer() {
-            window.location.href = "/assassins/admin/reviveplayer";
-            return false;
-        }
-    </script>
-=======
 <script>
     function addPlayer() {
         window.location.href = "/assassins/admin/addplayer";
@@ -165,6 +70,4 @@
         return false;
     }
 </script>
->>>>>>> .merge_file_a02188
-</body>
 </html>
