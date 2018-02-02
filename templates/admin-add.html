@@ -11,21 +11,21 @@
 </head>
 <body class = 'animus-bg'>
     <div>
-        <form action='' method='POST' onsubmit='return submitForm();'>
+        <form action='/assassins/admin/addplayersubmit' method='POST' >
         <div>
             <p style = "font-size: 25px"> <b>Add Player</b> </p> <br/>Please enter:
         </div>
         <div>
             Player token:
-            <input type='text' name='token' id='token'>
+            <input type='text' name='token' id='token' required>
         </div>
         <div>
             Name:
-            <input type='text' name='name' id='name'>
+            <input type='text' name='name' id='name' required>
         </div>
         <div>
             Nickname:
-            <input type='text' name='nickname' id='nickname'>
+            <input type='text' name='nickname' id='nickname' required>
         </div>
         <div>
             Task:
@@ -40,20 +40,20 @@
         </br>
             <input type='submit' value='Submit' class='btn btn-danger' onclick''>
         </div>
-        </form>
         <div>
         </br>
             <input type='submit' value='Back to admin page' class='btn btn-danger' onclick="return back();">
         </div>
+        </form>
     </div>
 
     <script>
         function submitForm() {
-            window.location.href = "/assassins/admin/addplayer" ;
+            window.location.href = "/assassins/admin/addplayersubmit" ;
             return false;
         }
         function back(){
-            window.location.href = "/assassins/admin";
+            window.location.href = "/assassins/admin/addplayers";
         }
     </script>
 </body>
