@@ -12,15 +12,21 @@
 <body class = 'animus-bg'>
 <div>
     <div class="jumbotron">
-    <form action='/assassins/admin/reviveplayersubmit' method='POST'>
+    <form action='/assassins/admin/editplayersubmit' method='POST'>
         <div style="text-align: center">
-            <h1>Revive Player</h1>
+            <h1>Edit Player</h1>
             <br>
         </div>
         <div class="form-group">
 
-            <label for="token">Token of player to revive</label>
+            <label for="token">Token of player to edit</label>
             <input type="token" class="form-control" id="token" placeholder="token">
+
+            <label for="name">New Name</label>
+            <input type="name" class="form-control" id="name" placeholder="name">
+
+            <label for="nickname">New Nickname</label>
+            <input type="nickname" class="form-control" id="nickname" placeholder="nickname">
 
             <label for="target">New Target</label>
             <input type="target" class="form-control" id="target" placeholder="target">
@@ -43,7 +49,7 @@
 
 <script>
     function submitForm() {
-        window.location.href = "/assassins/admin/reviveplayersubmit" ;
+        window.location.href = "/assassins/admin/editplayersubmit" ;
         return false;
     }
     function back(){

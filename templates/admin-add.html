@@ -11,52 +11,50 @@
 </head>
 <body class = 'animus-bg'>
 
-    <div>
-        <form action='/assassins/admin/addplayersubmit' method='POST' >
-        <div>
-            <p style = "font-size: 25px"> <b>Add Player</b> </p> <br/>Please enter:
+<div>
+    <div class="jumbotron">
+    <form action='/assassins/admin/addplayersubmit' method='POST' >
+        <div style="text-align: center">
+            <h1>Add Player</h1>
+            <br>
         </div>
-        <div>
-            Player token:
-            <input type='text' name='token' id='token' required>
-        </div>
-        <div>
-            Name:
-            <input type='text' name='name' id='name' required>
-        </div>
-        <div>
-            Nickname:
-            <input type='text' name='nickname' id='nickname' required>
-        </div>
-        <div>
-            Task:
-            <input type='text' name='task' id='task'>
-        </div>
-        <div>
-            Target:
-            <input type='text' name='target' id='target'>
-        </div>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="name" class="form-control" id="name" placeholder="name">
 
-        <div>
-        </br>
-            <input type='submit' value='Submit' class='btn btn-danger' onclick''>
-        </div>
-        </form>
+            <label for="nickname">Nickname</label>
+            <input type="nickname" class="form-control" id="nickname" placeholder="nickname">
 
-        <div>
-        </br>
-            <input type='submit' value='Back to admin page' class='btn btn-danger' onclick="return back();">
+            <label for="token">Token</label>
+            <input type="token" class="form-control" id="token" placeholder="token">
+
+            <label for="target">Target</label>
+            <input type="target" class="form-control" id="target" placeholder="target">
+
+            <label for="task">Task</label>
+            <input type="task" class="form-control" id="task" placeholder="task">
         </div>
+        <br>
+        <div style="text-align: center">
+            <input type='submit' value='Submit' class='btn btn-danger' onclick="submitForm()">
+        </div>
+    </form>
     </div>
+    <br>
 
-    <script>
-        function submitForm() {
-            window.location.href = "/assassins/admin/addplayersubmit" ;
-            return false;
-        }
-        function back(){
-            window.location.href = "/assassins/admin";
-        }
-    </script>
+    <div style="text-align: center">
+        <input type='submit' value='Back to admin page' class='btn btn-danger' onclick="return back();">
+    </div>
+</div>
+
+<script>
+    function submitForm() {
+        window.location.href = "/assassins/admin/addplayersubmit" ;
+        return false;
+    }
+    function back(){
+        window.location.href = "/assassins/admin";
+    }
+</script>
 </body>
 </html>
