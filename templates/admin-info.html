@@ -45,7 +45,7 @@
 
     <div>
         </br>
-        <input type='submit' value='Add Player' class='btn btn-danger' onclick="return addPlayer();">
+        <input type='button' value='Add Player' class='btn btn-danger' onclick="return addPlayer();">
 
         <input type='submit' value='Delete Player' class='btn btn-danger' onclick="return deletePlayer();">
 
@@ -56,17 +56,17 @@
 
 <script>
     function addPlayer() {
-        window.location.href = "/assassins/admin/addplayer";
+        window.location.href = "/assassins/addplayer";
         return false;
     }
 
     function deletePlayer() {
-        window.location.href = "/assassins/admin/deleteplayer";
+        window.location.href = "/assassins/deleteplayer";
         return false;
     }
 
     function revivePlayer() {
-        window.location.href = "/assassins/admin/reviveplayer";
+        window.location.href = "/assassins/reviveplayer";
         return false;
     }
 </script>
