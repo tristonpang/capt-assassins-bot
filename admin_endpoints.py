@@ -8,7 +8,7 @@ adminEndpoints = Blueprint('adminEndpoints', __name__, template_folder='template
 
 @adminEndpoints.route("/assassins/admin")
 def adminIndex():
-    return render_template("admin-login.html")
+    return render_template("admin-info.html")
 
 @adminEndpoints.route("/assassins/admin/addplayers")
 def displayAdmin():
