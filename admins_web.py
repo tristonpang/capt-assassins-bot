@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 @app.route("/assassins/admin")
 def index():
-    return render_template("admin-login.html")
+    return render_template("admin-info.html")
 
 @app.route("/assassins/admin/<token>")
 def displayPage(token):
