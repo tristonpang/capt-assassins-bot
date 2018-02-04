@@ -52,11 +52,8 @@
 }
 
 .animus-bg {
-  background-image: url("../imgs/info.jpg") no-repeat center center fixed;
-  -webkit-background-size: cover;
--moz-background-size: cover;
--o-background-size: cover;
-background-size: cover;
+  background-image: url("../imgs/info.jpg");
+  background-size: cover;
 }
 
 
