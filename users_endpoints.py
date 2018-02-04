@@ -44,8 +44,12 @@ def displayPage(token):
         INNER JOIN users ON users.user_id = contracts.contract_targetID WHERE \
         contracts.contract_complete is null and contracts.contract_assID = %s", (user_id,))
         task_data = cur.fetchone()
-        task_desc = task_data[0]
-        target_name = task_data[1]
+        if task_data is not None:
+            task_desc = task_data[0]
+            target_name = task_data[1]
+        else:
+            task_desc = None
+            target_name = None
 
     #slice data, add into return statement
     return render_template("player-info.html", token = token, user_alive = user_alive, 
