@@ -44,12 +44,6 @@ def displayDelSuccess():
     conn.commit()
     return render_template("admin-deletesuccess.html")
 
-
-@adminEndpoints.route("/assassins/reviveplayer", methods=['POST'])
-def displayRevive():
-    return render_template("admin-revive.html")
-
-
 @adminEndpoints.route("/assassins/admin/reviveplayersubmit", methods=['POST'])
 def displayReviveSuccess():
     cur = conn.cursor()
