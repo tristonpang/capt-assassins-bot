@@ -53,7 +53,10 @@
 
 .animus-bg {
   background-image: url("../imgs/info.jpg");
-  background-size: cover;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 
