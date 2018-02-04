@@ -50,6 +50,8 @@ def displayPage(token):
         else:
             task_desc = None
             target_name = None
+    
+    cur.close()
 
     #slice data, add into return statement
     return render_template("player-info.html", token = token, user_alive = user_alive, 
@@ -85,5 +87,7 @@ def killPage(token):
     if target_chat_id != None:
         message = "*Oh no!* You have been killed by _" + user_nickname + "_!"
         sendMsg(target_chat_id, message)
+    
+    cur.close()
 
     return render_template("player-killconfirmed.html", dead_target = old_target_name)
