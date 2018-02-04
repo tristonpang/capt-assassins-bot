@@ -7,6 +7,8 @@ adminEndpoints = Blueprint('adminEndpoints', __name__, template_folder='template
 
 def loggedIn():
     userHash = request.cookies.get("adminLoggedIn") 
+    if userHash is None:
+        return False
     conn = psycopg2.connect(connStr)
     conn.autocommit = True
     cur = conn.cursor()
@@ -38,6 +40,16 @@ def adminLoginSubmit():
     else:
         # Failed
         return redirect("/assassins/admin/?msg=Wrong+password")
+
+@adminEndpoints.route("/assassins/admin/logout/")
+def adminLogout():
+    userHash = request.cookies.get("adminLoggedIn") 
+    if userHash is not None:
+        conn = psycopg2.connect(connStr)
+        conn.autocommit = True
+        cur = conn.cursor()
+        cur.execute("DELETE FROM FROM admin_users WHERE hash = %s", (userHash,))
+    return redirect("/assassins/admin/")
 
 @adminEndpoints.route("/assassins/admin/dashboard")
 def adminIndex():
