@@ -48,7 +48,7 @@ def adminLogout():
         conn = psycopg2.connect(connStr)
         conn.autocommit = True
         cur = conn.cursor()
-        cur.execute("DELETE FROM FROM admin_users WHERE hash = %s", (userHash,))
+        cur.execute("DELETE FROM admin_users WHERE hash = %s", (userHash,))
     return redirect("/assassins/admin/")
 
 @adminEndpoints.route("/assassins/admin/dashboard")
