@@ -143,9 +143,22 @@ def displayEditSuccess():
     conn.autocommit = True
     cur = conn.cursor()
     print(request.form)
-    cur.execute("DELETE FROM users WHERE user_password = %s", (request.form['exampleInputToken']))
+
+    cur.execute("SELECT user_id FROM users WHERE user_password = %s", [request.form['token']])
+    tempToken = cur.fetchone();
+    token = tempToken[0];
+
+    cur.execute("SELECT user_id FROM users WHERE user_name = %s", [request.form['target']])
+    tempTarget = cur.fetchone();
+    target = tempTarget[0];
+
+    cur.execute("UPDATE users SET (user_name, user_nickname) VALUES (%s, %s) WHERE user_id = %s", (request.form['name'], request.form['nickname', token]))
+
+    cur.execute("DELETE FROM contracts WHERE contract_assid = %s", (token))
+    cur.execute("INSERT INTO contracts (contract_assid, contract_asstargetid, contracts_task) VALUES (token, target, request.form['task'])")
+
     cur.close()
-    return render_template("admin-deletesuccess.html")
+    return render_template("admin-success.html")
 
 # To be done after deleteing conn.
 # @adminEndpoints.route("/assassins/admin/deleteplayersubmit", methods=['POST'])
