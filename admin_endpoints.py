@@ -68,9 +68,9 @@ def adminIndex():
 def displayAdmin():
     return render_template("admin-add.html")
 
-@adminEndpoints.route("/assassins/deleteplayer")
-def displaydelete():
-    return render_template("admin-delete.html")
+@adminEndpoints.route("/assassins/editplayer")
+def displayEdit():
+    return render_template("admin-edit.html")
 
 @adminEndpoints.route("/assassins/reviveplayer")
 def displayRevive():
@@ -152,10 +152,10 @@ def displayEditSuccess():
     tempTarget = cur.fetchone();
     target = tempTarget[0];
 
-    cur.execute("UPDATE users SET (user_name, user_nickname) VALUES (%s, %s) WHERE user_id = %s", (request.form['name'], request.form['nickname', token]))
+    cur.execute("UPDATE users SET user_name = %s, user_nickname = %s WHERE user_id = %s", (request.form['name'], request.form['nickname'], token))
 
-    cur.execute("DELETE FROM contracts WHERE contract_assid = %s", (token))
-    cur.execute("INSERT INTO contracts (contract_assid, contract_asstargetid, contracts_task) VALUES (token, target, request.form['task'])")
+    cur.execute("DELETE FROM contracts WHERE contract_assid = %s", [token])
+    cur.execute("INSERT INTO contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)", [token, target, request.form['task']])
 
     cur.close()
     return render_template("admin-success.html")
