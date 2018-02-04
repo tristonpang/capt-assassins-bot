@@ -1,5 +1,5 @@
 import requests, json
-from flask import Blueprint, request, render_template
+from flask import Blueprint, request, render_template, redirect
 import psycopg2
 from datetime import datetime
 from private_vars import telegramBotURL, connStr
@@ -12,7 +12,7 @@ usersEndpoints = Blueprint('usersEndpoints', __name__, template_folder='template
 
 @usersEndpoints.route("/assassins/")
 def index():
-    return render_template("player-login.html")
+    return render_template("player-login.html", msg = request.args.get("msg"))
 
 @usersEndpoints.route("/assassins/<token>")
 def displayPage(token):
@@ -22,6 +22,9 @@ def displayPage(token):
     cur.execute("SELECT user_id, user_nickname, user_name, user_alive, user_telegram FROM users WHERE user_password = %s", (token,))
     user_data = cur.fetchone()
     
+    if user_data is None:
+        # User not found
+        return redirect("/assassins/?msg=Token+not+found")
     user_id = user_data[0]
     user_nickname = user_data[1]
     user_name = user_data[2]
