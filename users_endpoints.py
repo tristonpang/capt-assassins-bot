@@ -40,7 +40,7 @@ def displayPage(token):
         task_desc = None
         target_name = None
     else:
-        cur.execute("SELECT contracts.contract_task, users.user_name FROM contracts \
+        cur.execute("SELECT contracts.contracts_task, users.user_name FROM contracts \
         INNER JOIN users ON users.user_id = contracts.contract_targetID WHERE \
         contracts.contract_complete is null and contracts.contract_assID = %s", (user_id,))
         task_data = cur.fetchone()
