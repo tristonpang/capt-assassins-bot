@@ -2,7 +2,7 @@ import requests, json
 from flask import Blueprint, request
 import psycopg2
 from datetime import datetime
-from private_vars import telegramBotURL, conn
+from private_vars import telegramBotURL, connStr
 
 # from flask_cache import Cache
 
@@ -13,10 +13,11 @@ teleBot = Blueprint('teleBot', __name__, template_folder='templates')
 # cache = SimpleCache()
 # cache = Cache(config={'CACHE_TYPE': 'filesystem', 'CACHE_DIR': '/'})
 
-cur = conn.cursor()
-
 @teleBot.route('/assassins/telegram/update/', methods = ["POST"])
 def telegramUpdate():
+    conn = psycopg2.connect(connStr)
+    conn.autocommit = True
+    cur = conn.cursor()
     data = request.get_json()
     chatID = data["message"]["chat"]["id"]
     print(data)
@@ -59,6 +60,9 @@ def telegramUpdate():
         user_id = cur.fetchone()[0]
         cur.execute("UPDATE users SET user_telegram = %s WHERE user_id = %s", (chatID, user_id,))
         cur.execute("DELETE FROM tele_ids WHERE user_id = %s", (user_id,))
+    
+    cur.close()
+
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
 def sendMsg(id, msg):
