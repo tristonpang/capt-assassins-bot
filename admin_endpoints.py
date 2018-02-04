@@ -54,3 +54,15 @@ def displayReviveSuccess():
                 (request.form['task'], request.form['target'], request.form['token']))
     conn.commit()
     return render_template("admin-success.html")
+
+# To be done after editing conn.
+# @adminEndpoints.route("/assassins/admin/editplayersubmit", methods=['POST'])
+# def displayEditSuccess():
+#     cur = conn.cursor()
+#     print(request.form)
+#     cur.execute("UPDATE users"
+#                 "SET (user_password, user_name, user_nickname, user_target, ) VALUES (alive, %s, %s)"
+#                 "WHERE (user_password) VALUES (%s)",
+#                 (request.form['task'], request.form['target'], request.form['token']))
+#     conn.commit()
+#     return render_template("admin-deletesuccess.html")
