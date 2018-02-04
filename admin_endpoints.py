@@ -7,6 +7,17 @@ adminEndpoints = Blueprint('adminEndpoints', __name__, template_folder='template
 hashLock = threading.Lock()
 userHashes = set()
 
+def loggedIn():
+    userHash = request.cookies.get("adminLoggedIn") 
+    print(userHash)
+    with hashLock:
+        if userHash is None or userHash not in userHashes:
+            # No access
+            return False
+        else:
+            return True
+        
+
 @adminEndpoints.route("/assassins/admin/")
 def adminLoginPage():
     return render_template("admin-login.html", msg = request.args.get("msg"))
@@ -29,6 +40,8 @@ def adminLoginSubmit():
 
 @adminEndpoints.route("/assassins/admin/dashboard")
 def adminIndex():
+    if not loggedIn():
+        return redirect("/assassins/admin/?msg=Please+log+in")
     conn = psycopg2.connect(connStr)
     conn.autocommit = True
     cur = conn.cursor()
