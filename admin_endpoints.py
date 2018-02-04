@@ -6,7 +6,7 @@ from private_vars import connStr
 adminEndpoints = Blueprint('adminEndpoints', __name__, template_folder='templates')
 
 def loggedIn():
-    userHash = request.cookies.get("adminLoggedIn") 
+    userHash = request.cookies.get("adminLoggedIn")
     if userHash is None:
         return False
     conn = psycopg2.connect(connStr)
@@ -17,7 +17,7 @@ def loggedIn():
         return False
     else:
         return True
-        
+
 
 @adminEndpoints.route("/assassins/admin/")
 def adminLoginPage():
@@ -43,7 +43,7 @@ def adminLoginSubmit():
 
 @adminEndpoints.route("/assassins/admin/logout/")
 def adminLogout():
-    userHash = request.cookies.get("adminLoggedIn") 
+    userHash = request.cookies.get("adminLoggedIn")
     if userHash is not None:
         conn = psycopg2.connect(connStr)
         conn.autocommit = True
@@ -66,76 +66,86 @@ def adminIndex():
 
 @adminEndpoints.route("/assassins/addplayer")
 def displayAdmin():
-	return render_template("admin-add.html")
+    return render_template("admin-add.html")
 
 @adminEndpoints.route("/assassins/deleteplayer")
 def displaydelete():
-	return render_template("admin-delete.html")
+    return render_template("admin-delete.html")
 
 @adminEndpoints.route("/assassins/reviveplayer")
 def displayRevive():
-	return render_template("admin-revive.html")
+    return render_template("admin-revive.html")
 
 @adminEndpoints.route("/assassins/admin/addplayersubmit", methods=['POST'])
 def displaySubmit():
-	conn = psycopg2.connect(connStr)
-	conn.autocommit = True
-	cur = conn.cursor()
-	print(request.form)
-	cur.execute("INSERT into users (user_nickname, user_name, user_password) VALUES (%s, %s, %s)",
-				(request.form['nickname'], request.form['name'], request.form['token']))
-	cur.execute("SELECT MAX(user_id) FROM users")
-	tempMaxId = cur.fetchone();
-	maxId = tempMaxId[0];
+    conn = psycopg2.connect(connStr)
+    conn.autocommit = True
+    cur = conn.cursor()
+    print(request.form)
+    cur.execute("INSERT into users (user_nickname, user_name, user_password) VALUES (%s, %s, %s)",
+                (request.form['nickname'], request.form['name'], request.form['token']))
+    cur.execute("SELECT MAX(user_id) FROM users")
+    tempMaxId = cur.fetchone();
+    maxId = tempMaxId[0];
 
-	cur.execute("SELECT user_id FROM users WHERE user_name = %s", [request.form['target']])
-	tempTarget = cur.fetchone();
-	target = tempTarget[0];
+    cur.execute("SELECT user_id FROM users WHERE user_name = %s", [request.form['target']])
+    tempTarget = cur.fetchone();
+    target = tempTarget[0];
 
-	print(maxId)
-	print(target)
+    print(maxId)
+    print(target)
 
-	cur.execute("INSERT into contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)", [maxId, target, request.form['task']])
+    cur.execute("INSERT into contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)", [maxId, target, request.form['task']])
 
-	cur.close()
-	return render_template("admin-success.html")
+    cur.close()
+    return render_template("admin-success.html")
 
 @adminEndpoints.route("/assassins/admin/deleteplayersubmit", methods=['POST'])
 def displayDelSuccess():
-	conn = psycopg2.connect(connStr)
-	conn.autocommit = True
-	cur = conn.cursor()
-	print(request.form)
-	cur.execute("DELETE FROM users WHERE user_password = %s", (request.form['exampleInputToken']))
-	cur.close()
-	return render_template("admin-deletesuccess.html")
+    conn = psycopg2.connect(connStr)
+    conn.autocommit = True
+    cur = conn.cursor()
+    print(request.form)
+    cur.execute("DELETE FROM users WHERE user_password = %s", (request.form['exampleInputToken']))
+    cur.close()
+    return render_template("admin-deletesuccess.html")
 
 @adminEndpoints.route("/assassins/admin/reviveplayersubmit", methods=['POST'])
 def displayReviveSuccess():
-	conn = psycopg2.connect(connStr)
-	conn.autocommit = True
-	cur = conn.cursor()
-	# String of target in var
-	target = request.form['target'] 
-	# cur.execute("SELECT FROM users WHERE user_name = %s", target)
-	
-	cur.execute("UPDATE users SET user_alive = true WHERE user_password = %s", ([request.form['token']]))
+    conn = psycopg2.connect(connStr)
+    conn.autocommit = True
+    cur = conn.cursor()
+    # String of target in var
+    target = request.form['target']
+    # cur.execute("SELECT FROM users WHERE user_name = %s", target)
 
-	cur.execute("SELECT user_id FROM users WHERE user_password = %s", [request.form['token']])
-	tempToken = cur.fetchone();
-	token = tempToken[0];
+    cur.execute("UPDATE users SET user_alive = true WHERE user_password = %s", ([request.form['token']]))
 
-	cur.execute("SELECT user_id FROM users WHERE user_name = %s", [request.form['target']])
-	tempTarget = cur.fetchone();
-	target = tempTarget[0];
+    cur.execute("SELECT user_id FROM users WHERE user_password = %s", [request.form['token']])
+    tempToken = cur.fetchone();
+    token = tempToken[0];
 
-	cur.execute("INSERT INTO contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)", [token, target, request.form['task']])
+    cur.execute("SELECT user_id FROM users WHERE user_name = %s", [request.form['target']])
+    tempTarget = cur.fetchone();
+    target = tempTarget[0];
 
-	print(token)
-	print(target)
-	print(request.form['task'])
-	cur.close()
-	return render_template("admin-success.html")
+    cur.execute("INSERT INTO contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)", [token, target, request.form['task']])
+
+    print(token)
+    print(target)
+    print(request.form['task'])
+    cur.close()
+    return render_template("admin-success.html")
+
+@adminEndpoints.route("/assassins/admin/editplayersubmit", methods=['POST'])
+def displayEditSuccess():
+    conn = psycopg2.connect(connStr)
+    conn.autocommit = True
+    cur = conn.cursor()
+    print(request.form)
+    cur.execute("DELETE FROM users WHERE user_password = %s", (request.form['exampleInputToken']))
+    cur.close()
+    return render_template("admin-deletesuccess.html")
 
 # To be done after deleteing conn.
 # @adminEndpoints.route("/assassins/admin/deleteplayersubmit", methods=['POST'])
