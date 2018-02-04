@@ -2,7 +2,7 @@ import requests, json
 from flask import Blueprint, request
 import psycopg2
 from datetime import datetime
-from private_vars import telegramBotURL, conn
+from private_vars import telegramBotURL, connStr
 
 # from flask_cache import Cache
 
@@ -15,6 +15,8 @@ teleBot = Blueprint('teleBot', __name__, template_folder='templates')
 
 @teleBot.route('/assassins/telegram/update/', methods = ["POST"])
 def telegramUpdate():
+    conn = psycopg2.connect(connStr)
+    conn.autocommit = True
     cur = conn.cursor()
     data = request.get_json()
     chatID = data["message"]["chat"]["id"]

@@ -2,7 +2,7 @@ import requests, json
 from flask import Blueprint, request, render_template
 import psycopg2
 from datetime import datetime
-from private_vars import telegramBotURL, conn
+from private_vars import telegramBotURL, connStr
 import random
 from telegram import sendMsg
 
@@ -16,6 +16,8 @@ def index():
 
 @usersEndpoints.route("/assassins/<token>")
 def displayPage(token):
+    conn = psycopg2.connect(connStr)
+    conn.autocommit = True
     cur = conn.cursor()
     cur.execute("SELECT user_id, user_nickname, user_name, user_alive, user_telegram FROM users WHERE user_password = %s", (token,))
     user_data = cur.fetchone()
@@ -59,6 +61,8 @@ def displayPage(token):
 
 @usersEndpoints.route("/assassins/<token>/kill")
 def killPage(token):
+    conn = psycopg2.connect(connStr)
+    conn.autocommit = True
     cur = conn.cursor()
     cur.execute("SELECT users.user_id, contracts.contract_id, contract_targetID, users.user_nickname \
         FROM users INNER JOIN contracts ON users.user_id = contracts.contract_assId \
