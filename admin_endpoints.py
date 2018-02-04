@@ -1,13 +1,33 @@
-import requests, json
-from flask import Blueprint, request, render_template
-import psycopg2
+import requests, json, psycopg2, bcrypt, threading
+from flask import Blueprint, request, render_template, redirect, make_response
 from datetime import datetime
 from private_vars import connStr
 
 adminEndpoints = Blueprint('adminEndpoints', __name__, template_folder='templates')
+hashLock = threading.Lock()
+userHashes = set()
 
+@adminEndpoints.route("/assassins/admin/")
+def adminLoginPage():
+    return render_template("admin-login.html", msg = request.args.get("msg"))
 
-@adminEndpoints.route("/assassins/admin")
+@adminEndpoints.route("/assassins/admin/login/", methods = ["POST"])
+def adminLoginSubmit():
+    if bcrypt.checkpw(str.encode(request.form['pw']), b'$2b$12$DWPryCWLqO9o6vpz4tITIuiU7MIjZatZaWPYulvP4x2XsFj/CodE2'):
+        # Passed
+        resp = make_response(redirect("/assassins/admin/dashboard"))
+        # Create a hash
+        userHash = bytes.decode(bcrypt.gensalt())
+        with hashLock:
+            # Add this hash to a set of authorised users, and attach this hash as a cookie to the response
+            userHashes.add(userHash)
+            resp.set_cookie('adminLoggedIn', userHash)
+            return resp
+    else:
+        # Failed
+        return redirect("/assassins/admin/?msg=Wrong+password")
+
+@adminEndpoints.route("/assassins/admin/dashboard")
 def adminIndex():
     conn = psycopg2.connect(connStr)
     conn.autocommit = True

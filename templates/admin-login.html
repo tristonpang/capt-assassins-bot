@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/admin-custom-min.css">
+    <link rel="stylesheet" href="../static/css/admin-style.css" media="screen">
+    <title>Dragon Assassins | Admin Login Page</title>
+</head>
+<body class = 'animus-bg'>
+
+<div>
+    <div class="jumbotron">
+        <form action='/assassins/admin/login/' method='POST' >
+            <div style="text-align: center">
+                <h1>Login</h1>
+                <br>
+            </div>
+            {% if msg %}
+                <div class='alert alert-danger'>{{msg}}</div>
+            {% endif %}
+            <div class="form-group">
+                <input type="password" class="form-control" name='pw' placeholder="Password">
+            </div>
+            <div style="text-align: center">
+                <input type='submit' value='Submit' class='btn btn-danger'>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function back(){
+        window.location.href = "/assassins/admin";
+    }
+</script>
+</body>
+</html>
