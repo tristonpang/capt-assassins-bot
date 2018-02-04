@@ -2,7 +2,7 @@ import requests, json
 from flask import Blueprint, request, render_template
 import psycopg2
 from datetime import datetime
-from private_vars import telegramBotURL, conn
+from private_vars import telegramBotURL, connStr
 import random
 from telegram import sendMsg
 
@@ -16,6 +16,8 @@ def index():
 
 @usersEndpoints.route("/assassins/<token>")
 def displayPage(token):
+    conn = psycopg2.connect(connStr)
+    conn.autocommit = True
     cur = conn.cursor()
     cur.execute("SELECT user_id, user_nickname, user_name, user_alive, user_telegram FROM users WHERE user_password = %s", (token,))
     user_data = cur.fetchone()
@@ -44,8 +46,14 @@ def displayPage(token):
         INNER JOIN users ON users.user_id = contracts.contract_targetID WHERE \
         contracts.contract_complete is null and contracts.contract_assID = %s", (user_id,))
         task_data = cur.fetchone()
-        task_desc = task_data[0]
-        target_name = task_data[1]
+        if task_data is not None:
+            task_desc = task_data[0]
+            target_name = task_data[1]
+        else:
+            task_desc = None
+            target_name = None
+    
+    cur.close()
 
     #slice data, add into return statement
     return render_template("player-info.html", token = token, user_alive = user_alive, 
@@ -53,6 +61,8 @@ def displayPage(token):
 
 @usersEndpoints.route("/assassins/<token>/kill")
 def killPage(token):
+    conn = psycopg2.connect(connStr)
+    conn.autocommit = True
     cur = conn.cursor()
     cur.execute("SELECT users.user_id, contracts.contract_id, contract_targetID, users.user_nickname \
         FROM users INNER JOIN contracts ON users.user_id = contracts.contract_assId \
@@ -81,5 +91,7 @@ def killPage(token):
     if target_chat_id != None:
         message = "*Oh no!* You have been killed by _" + user_nickname + "_!"
         sendMsg(target_chat_id, message)
+    
+    cur.close()
 
     return render_template("player-killconfirmed.html", dead_target = old_target_name)
