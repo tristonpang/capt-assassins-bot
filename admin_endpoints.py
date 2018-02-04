@@ -1,22 +1,68 @@
-import requests, json
-from flask import Blueprint, request, render_template
-import psycopg2
+import requests, json, psycopg2, bcrypt
+from flask import Blueprint, request, render_template, redirect, make_response
 from datetime import datetime
 from private_vars import connStr
 
 adminEndpoints = Blueprint('adminEndpoints', __name__, template_folder='templates')
 
+def loggedIn():
+    userHash = request.cookies.get("adminLoggedIn") 
+    if userHash is None:
+        return False
+    conn = psycopg2.connect(connStr)
+    conn.autocommit = True
+    cur = conn.cursor()
+    cur.execute("SELECT id FROM admin_users WHERE hash = %s", (userHash,))
+    if cur.fetchone() is None:
+        return False
+    else:
+        return True
+        
 
-@adminEndpoints.route("/assassins/admin")
+@adminEndpoints.route("/assassins/admin/")
+def adminLoginPage():
+    return render_template("admin-login.html", msg = request.args.get("msg"))
+
+@adminEndpoints.route("/assassins/admin/login/", methods = ["POST"])
+def adminLoginSubmit():
+    if bcrypt.checkpw(str.encode(request.form['pw']), b'$2b$12$DWPryCWLqO9o6vpz4tITIuiU7MIjZatZaWPYulvP4x2XsFj/CodE2'):
+        # Passed
+        resp = make_response(redirect("/assassins/admin/dashboard"))
+        # Create a hash
+        userHash = bytes.decode(bcrypt.gensalt())
+        # Add this hash to a set of authorised users, and attach this hash as a cookie to the response
+        conn = psycopg2.connect(connStr)
+        conn.autocommit = True
+        cur = conn.cursor()
+        cur.execute("INSERT INTO admin_users (hash) VALUES (%s)", (userHash,))
+        resp.set_cookie('adminLoggedIn', userHash)
+        return resp
+    else:
+        # Failed
+        return redirect("/assassins/admin/?msg=Wrong+password")
+
+@adminEndpoints.route("/assassins/admin/logout/")
+def adminLogout():
+    userHash = request.cookies.get("adminLoggedIn") 
+    if userHash is not None:
+        conn = psycopg2.connect(connStr)
+        conn.autocommit = True
+        cur = conn.cursor()
+        cur.execute("DELETE FROM admin_users WHERE hash = %s", (userHash,))
+    return redirect("/assassins/admin/")
+
+@adminEndpoints.route("/assassins/admin/dashboard")
 def adminIndex():
-	conn = psycopg2.connect(connStr)
-	conn.autocommit = True
-	cur = conn.cursor()
-	cur.execute("SELECT u1.user_name AS Player, u1.user_nickname AS Nickname, c.contracts_task AS task, u2.user_name AS Target, u1.user_alive AS Status FROM users u1, users u2, tasks t, contracts c WHERE u1.user_id = c.contract_assid AND u2.user_id = contract_targetid AND c.contract_taskid = t.task_id")
-	data = cur.fetchall()
-	cur.close()
-	return render_template("admin-info.html", data=data)
 
+    if not loggedIn():
+        return redirect("/assassins/admin/?msg=Please+log+in")
+    conn = psycopg2.connect(connStr)
+    conn.autocommit = True
+    cur = conn.cursor()
+    cur.execute("SELECT u1.user_name AS Player, u1.user_nickname AS Nickname, c.contracts_task AS task, u2.user_name AS Target, u1.user_alive AS Status FROM users u1, users u2, contracts c WHERE u1.user_id = c.contract_assid AND u2.user_id = c.contract_targetid")
+    data = cur.fetchall()
+    cur.close()
+    return render_template("admin-info.html", data=data)
 
 @adminEndpoints.route("/assassins/addplayer")
 def displayAdmin():

@@ -42,16 +42,14 @@ def telegramUpdate():
             else:
                 outputStr += "_" + userData + " - dead_\n"
         outputStr += "\n*Completed Contracts*\n"
-        cur.execute("SELECT assassin.user_nickname, target.user_nickname, tasks.task_description, \
+        cur.execute("SELECT assassin.user_nickname, target.user_nickname, \
         contracts.contract_complete FROM contracts INNER JOIN users AS assassin ON \
         contracts.contract_assid = assassin.user_id INNER JOIN users AS target ON \
-        contracts.contract_targetid = target.user_id INNER JOIN tasks ON \
-        contracts.contract_taskid = tasks.task_id WHERE contracts.contract_complete IS NOT NULL \
+        contracts.contract_targetid = target.user_id WHERE contracts.contract_complete IS NOT NULL \
         ORDER BY contracts.contract_complete DESC")
         completedContracts = cur.fetchall()
         for contract in completedContracts:
             outputStr += contract[0] + " killed " + contract[1] + " ("+contract[3].strftime("%a %d %b, %I:%M %p")+")\n"
-            # outputStr += contract[0] + " killed " + contract[1] + " by " + contract[2] + " ("+contract[3].strftime("%a %d %b, %I:%M %p")+")\n"
         sendMsg(chatID, outputStr)
     elif "text" in data["message"] and data["message"]["text"][0:6] == "/start":
         user_hash = data["message"]["text"][7:]
