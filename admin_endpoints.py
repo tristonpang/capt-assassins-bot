@@ -1,21 +1,20 @@
-import requests, json, psycopg2, bcrypt, threading
+import requests, json, psycopg2, bcrypt
 from flask import Blueprint, request, render_template, redirect, make_response
 from datetime import datetime
 from private_vars import connStr
 
 adminEndpoints = Blueprint('adminEndpoints', __name__, template_folder='templates')
-hashLock = threading.Lock()
-userHashes = set()
 
 def loggedIn():
     userHash = request.cookies.get("adminLoggedIn") 
-    print(userHash)
-    with hashLock:
-        if userHash is None or userHash not in userHashes:
-            # No access
-            return False
-        else:
-            return True
+    conn = psycopg2.connect(connStr)
+    conn.autocommit = True
+    cur = conn.cursor()
+    cur.execute("SELECT id FROM admin_users WHERE hash = %s", (userHash,))
+    if cur.fetchone() is None:
+        return False
+    else:
+        return True
         
 
 @adminEndpoints.route("/assassins/admin/")
@@ -29,11 +28,13 @@ def adminLoginSubmit():
         resp = make_response(redirect("/assassins/admin/dashboard"))
         # Create a hash
         userHash = bytes.decode(bcrypt.gensalt())
-        with hashLock:
-            # Add this hash to a set of authorised users, and attach this hash as a cookie to the response
-            userHashes.add(userHash)
-            resp.set_cookie('adminLoggedIn', userHash)
-            return resp
+        # Add this hash to a set of authorised users, and attach this hash as a cookie to the response
+        conn = psycopg2.connect(connStr)
+        conn.autocommit = True
+        cur = conn.cursor()
+        cur.execute("INSERT INTO admin_users (hash) VALUES (%s)", (userHash,))
+        resp.set_cookie('adminLoggedIn', userHash)
+        return resp
     else:
         # Failed
         return redirect("/assassins/admin/?msg=Wrong+password")
