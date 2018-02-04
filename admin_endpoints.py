@@ -10,7 +10,7 @@ adminEndpoints = Blueprint('adminEndpoints', __name__, template_folder='template
 @adminEndpoints.route("/assassins/admin")
 def adminIndex():
     cur = conn.cursor()
-    cur.execute("SELECT u1.user_name AS Player, u1.user_nickname AS Nickname, t.task_description AS task, u2.user_name AS Target FROM users u1, users u2, tasks t, contracts c WHERE u1.user_id = c.contract_assid AND u2.user_id = contract_targetid AND c.contract_taskid = t.task_id")
+    cur.execute("SELECT u1.user_name AS Player, u1.user_nickname AS Nickname, t.task_description AS task, u2.user_name AS Target, u1.user_alive AS Status FROM users u1, users u2, tasks t, contracts c WHERE u1.user_id = c.contract_assid AND u2.user_id = contract_targetid AND c.contract_taskid = t.task_id")
     data = cur.fetchall()
     return render_template("admin-info.html", data=data)
 
