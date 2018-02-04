@@ -84,7 +84,6 @@ def displaySubmit():
 	print(request.form)
 	cur.execute("INSERT into users (user_nickname, user_name, user_password) VALUES (%s, %s, %s)",
 				(request.form['nickname'], request.form['name'], request.form['token']))
-	# # cur.execute("INSERT into contracts (contracts_task, contract_assid) VALUES (%s, %s) WHERE contract_assid = (SELECT user_id FROM users WHERE user_password = %s)", ([request.form['task']], request.form['token']))
 	cur.execute("SELECT MAX(user_id) FROM users")
 	tempMaxId = cur.fetchone();
 	maxId = tempMaxId[0];
@@ -96,7 +95,7 @@ def displaySubmit():
 	print(maxId)
 	print(target)
 
-	cur.execute("INSERT into contracts (contract_assid, contract_targetid, contracts_task, contract_taskid) VALUES (%s, %s, %s, 1)", [maxId, target, request.form['task']])
+	cur.execute("INSERT into contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)", [maxId, target, request.form['task']])
 
 	cur.close()
 	return render_template("admin-success.html")
@@ -121,8 +120,20 @@ def displayReviveSuccess():
 	# cur.execute("SELECT FROM users WHERE user_name = %s", target)
 	
 	cur.execute("UPDATE users SET user_alive = true WHERE user_password = %s", ([request.form['token']]))
-  
-	print(request.form)
+
+	cur.execute("SELECT user_id FROM users WHERE user_password = %s", [request.form['token']])
+	tempToken = cur.fetchone();
+	token = tempToken[0];
+
+	cur.execute("SELECT user_id FROM users WHERE user_name = %s", [request.form['target']])
+	tempTarget = cur.fetchone();
+	target = tempTarget[0];
+
+	cur.execute("INSERT INTO contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)", [token, target, request.form['task']])
+
+	print(token)
+	print(target)
+	print(request.form['task'])
 	cur.close()
 	return render_template("admin-success.html")
 
