@@ -40,3 +40,14 @@ def displayDelSuccess():
     cur.execute("DELETE FROM users WHERE user_password = %s", (request.form['exampleInputToken']))
     conn.commit()
     return render_template("admin-deletesuccess.html")
+
+@adminEndpoints.route("/assassins/admin/reviveplayersubmit", methods=['POST'])
+def displaySubmit():
+    cur = conn.cursor()
+    print(request.form)
+    cur.execute("UPDATE users"
+                "SET (user_status, user_task, user_target) VALUES (alive, %s, %s)"
+                "WHERE (user_password) VALUES (%s)",
+                (request.form['task'], request.form['target'], request.form['token']))
+    conn.commit()
+    return render_template("admin-success.html")
