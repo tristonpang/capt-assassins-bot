@@ -5,8 +5,8 @@
     <meta name="viewport" content="initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
-    <link rel="stylesheet" href="../static/css/normalize.css">
-    <link rel="stylesheet" href="../static/css/player-style.css">
+    <link rel="stylesheet" href="/assassins/static/css/normalize.css">
+    <link rel="stylesheet" href="/assassins/static/css/player-style.css">
     <script src="https://use.fontawesome.com/releases/v5.0.6/js/brands.js"></script>
     <script src="https://use.fontawesome.com/releases/v5.0.6/js/fontawesome.js"></script>
     <title>Dragon Assassins</title>
@@ -16,13 +16,13 @@
         <h1>Welcome, {{user_nick}}.</h1>
         {% if user_hash %}
             <div class='tele-blurb'>
-            <p>It looks like you have yet to link your Telegram account! You'll need to do it in 
+            <p>It looks like you have yet to link your Telegram account! You'll need to do it in
                 order to receive personalised notifications for the game.</p>
             <a class='button tele-button' href='https://telegram.me/capt_assassins_bot?start={{user_hash}}'><i class='fab fa-telegram-plane'></i>&nbsp;&nbsp;Link Telegram Account</a>
             </div>
         {% endif %}
         {% if user_alive %}
-        <p>Your mission, should you choose to accept it, is to assassinate 
+        <p>Your mission, should you choose to accept it, is to assassinate
             <span class='highlight'>{{target}}</span> by <span class='highlight'>{{task}}</span>.</p>
         <p>Once you have completed your task, lock it in by clicking the button below.</p>
         <a class='button' href='/assassins/{{token}}/kill'>Contract completed</a>
