@@ -19,10 +19,13 @@ def adminIndex():
 def displayAdmin():
     return render_template("admin-add.html")
 
-@adminEndpoints.route("/assassins/deleteplayer")
-def displayDelete():
-    return render_template("admin-delete.html")
+@adminEndpoints.route("/assassins/editplayer")
+def displayEdit():
+    return render_template("admin-edit.html")
 
+@adminEndpoints.route("/assassins/reviveplayer")
+def displayRevive():
+    return render_template("admin-revive.html")
 
 @adminEndpoints.route("/assassins/admin/addplayersubmit", methods=['POST'])
 def displaySubmit():
@@ -41,12 +44,13 @@ def displayDelSuccess():
     conn.commit()
     return render_template("admin-deletesuccess.html")
 
+
 @adminEndpoints.route("/assassins/reviveplayer", methods=['POST'])
 def displayRevive():
     return render_template("admin-revive.html")
 
 
-@adminEndpoints.route("/assassins/reviveplayersubmit", methods=['POST'])
+@adminEndpoints.route("/assassins/admin/reviveplayersubmit", methods=['POST'])
 def displayReviveSuccess():
     cur = conn.cursor()
     print(request.form)
