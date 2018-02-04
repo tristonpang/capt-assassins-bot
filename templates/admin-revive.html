@@ -20,32 +20,32 @@
             <div class="form-group">
 
                 <label for="token">Token of player to revive</label>
-                <input type="token" class="form-control" id="token" placeholder="token">
+                <input type="token" class="form-control" id="token" name = "token" placeholder="token">
 
                 <label for="target">New Target</label>
-                <input type="target" class="form-control" id="target" placeholder="target">
+                <input type="target" class="form-control" id="target" name = "target" placeholder="target">
 
                 <label for="task">New Task</label>
-                <input type="task" class="form-control" id="task" placeholder="task">
+                <input type="task" class="form-control" id="task" name = "task" placeholder="task">
             </div>
             <br>
             <div style="text-align: center">
-                <input type='submit' value='Submit' class='btn btn-danger' onclick="submitForm()">
+                <input type='submit' value='Submit' class='btn btn-danger'>
             </div>
         </form>
     </div>
     <br>
 
     <div style="text-align: center">
-        <input type='submit' value='Back to admin page' class='btn btn-danger' onclick="return back();">
+        <input type='button' value='Back to admin page' class='btn btn-danger' onclick="return back();">
     </div>
 </div>
 
 <script>
-    function submitForm() {
-        window.location.href = "/assassins/admin/reviveplayersubmit" ;
-        return false;
-    }
+    // function submitForm() {
+    //     window.location.href = "/assassins/admin/reviveplayersubmit" ;
+    //     return false;
+    // }
     function back(){
         window.location.href = "/assassins/admin";
     }
