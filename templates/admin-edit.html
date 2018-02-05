@@ -5,8 +5,8 @@
     <meta name="viewport" content="initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
-    <link rel="stylesheet" href="../static/css/admin-custom-min.css">
-    <link rel="stylesheet" href="../static/css/admin-style.css" media="screen">
+    <link rel="stylesheet" href="/assassins/static/css/admin-custom-min.css">
+    <link rel="stylesheet" href="/assassins/static/css/admin-style.css" media="screen">
     <title>Dragon Assassins</title>
 </head>
 <body class = 'animus-bg'>
@@ -18,13 +18,13 @@
                 <br>
             </div>
             <div class="form-group">
-                <label for="token">Player to edit:</label>
+                <label for="token">Select player to edit:</label>
                 <select name='user_id' id='user_id' class='form-control' onchange='updateFields()'>
                     {% for user in users %}
                         <option value='{{user[0]}}'>{{user[1]}} ({{user[2]}})</option>
                     {% endfor %}
                 </select>
-
+                <br />
                 <label for="token">Token (for players to log in)</label>
                 <input type="token" class="form-control" id="token" name='token' placeholder="token" required>
 
