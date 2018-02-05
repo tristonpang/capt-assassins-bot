@@ -64,15 +64,15 @@ def adminIndex():
     cur.close()
     return render_template("admin-info.html", data=data)
 
-@adminEndpoints.route("/assassins/addplayer")
+@adminEndpoints.route("/assassins/admin/addplayer")
 def displayAdmin():
     return render_template("admin-add.html")
 
-@adminEndpoints.route("/assassins/editplayer")
+@adminEndpoints.route("/assassins/admin/editplayer")
 def displayEdit():
     return render_template("admin-edit.html")
 
-@adminEndpoints.route("/assassins/reviveplayer")
+@adminEndpoints.route("/assassins/admin/reviveplayer")
 def displayRevive():
     return render_template("admin-revive.html")
 
