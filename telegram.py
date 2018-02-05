@@ -49,7 +49,7 @@ def telegramUpdate():
         ORDER BY contracts.contract_complete DESC")
         completedContracts = cur.fetchall()
         for contract in completedContracts:
-            outputStr += contract[0] + " killed " + contract[1] + " ("+contract[3].strftime("%a %d %b, %I:%M %p")+")\n"
+            outputStr += contract[0] + " killed " + contract[1] + " ("+contract[2].strftime("%a %d %b, %I:%M %p")+")\n"
         sendMsg(chatID, outputStr)
     elif "text" in data["message"] and data["message"]["text"][0:6] == "/start":
         user_hash = data["message"]["text"][7:]
