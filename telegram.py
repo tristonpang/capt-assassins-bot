@@ -27,7 +27,9 @@ def telegramUpdate():
         # Send update
         print("Received status update request")
         # Fetch status
-        cur.execute("SELECT users.user_nickname, users.user_alive, count(contracts.contract_complete) FROM users LEFT JOIN contracts ON users.user_id = contracts.contract_assid GROUP BY users.user_id ORDER BY users.user_alive DESC, users.user_nickname")
+        cur.execute("SELECT users.user_nickname, users.user_alive, count(contracts.contract_complete) as numKills \
+        FROM users LEFT JOIN contracts ON users.user_id = contracts.contract_assid \
+        GROUP BY users.user_id ORDER BY users.user_alive DESC, numKills DESC, users.user_nickname")
         users = cur.fetchall()
         outputStr = "*Current Players*\n"
         for user in users:
