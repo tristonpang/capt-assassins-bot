@@ -59,7 +59,7 @@ def adminIndex():
     conn = psycopg2.connect(connStr)
     conn.autocommit = True
     cur = conn.cursor()
-    cur.execute("SELECT u1.user_name AS Player, u1.user_nickname AS Nickname, c.contracts_task AS task, u2.user_name AS Target, u1.user_alive AS Status FROM users u1, users u2, contracts c WHERE u1.user_id = c.contract_assid AND u2.user_id = c.contract_targetid")
+    cur.execute("SELECT u1.user_password AS Token, u1.user_name AS Player, u1.user_nickname AS Nickname, c.contracts_task AS task, u2.user_name AS Target, u1.user_alive AS Status FROM users u1, users u2, contracts c WHERE u1.user_id = c.contract_assid AND u2.user_id = c.contract_targetid")
     data = cur.fetchall()
     cur.close()
     return render_template("admin-info.html", data=data)
