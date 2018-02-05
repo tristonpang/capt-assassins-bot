@@ -21,6 +21,8 @@ def loggedIn():
 
 @adminEndpoints.route("/assassins/admin/")
 def adminLoginPage():
+    if loggedIn():
+        return redirect("/assassins/admin/dashboard/")
     return render_template("admin-login.html", msg = request.args.get("msg"))
 
 @adminEndpoints.route("/assassins/admin/login/", methods = ["POST"])
@@ -51,9 +53,8 @@ def adminLogout():
         cur.execute("DELETE FROM admin_users WHERE hash = %s", (userHash,))
     return redirect("/assassins/admin/")
 
-@adminEndpoints.route("/assassins/admin/dashboard")
+@adminEndpoints.route("/assassins/admin/dashboard/")
 def adminIndex():
-
     if not loggedIn():
         return redirect("/assassins/admin/?msg=Please+log+in")
     conn = psycopg2.connect(connStr)
@@ -64,7 +65,7 @@ def adminIndex():
     users u2, contracts c WHERE u1.user_id = c.contract_assid AND u2.user_id = c.contract_targetid")
     data = cur.fetchall()
     cur.close()
-    return render_template("admin-info.html", data=data)
+    return render_template("admin-info.html", data=data, success = request.args.get("success"))
 
 @adminEndpoints.route("/assassins/admin/addplayer")
 def displayAdmin():
@@ -72,7 +73,36 @@ def displayAdmin():
 
 @adminEndpoints.route("/assassins/admin/editplayer")
 def displayEdit():
-    return render_template("admin-edit.html")
+    if not loggedIn():
+        return redirect("/assassins/admin/?msg=Please+log+in")
+    conn = psycopg2.connect(connStr)
+    conn.autocommit = True
+    cur = conn.cursor()
+    cur.execute("SELECT user_id, user_name, user_nickname FROM users ORDER BY user_name")
+    data = cur.fetchall()
+    cur.close()
+    return render_template("admin-edit.html", users = data)
+
+@adminEndpoints.route("/assassins/admin/searchUser/<userID>")
+def searchUser(userID):
+    if not loggedIn():
+        return json.dumps({"status": "not-authorised"})
+    conn = psycopg2.connect(connStr)
+    conn.autocommit = True
+    cur = conn.cursor()
+    cur.execute("SELECT users.user_nickname, users.user_password, \
+    users.user_name, contracts.contract_targetid, contracts.contracts_task \
+    FROM users LEFT JOIN contracts ON users.user_id = contracts.contract_assid WHERE \
+    users.user_id = %s", (userID,))
+    data = cur.fetchone()
+    cur.close()
+    return json.dumps({"status": "ok", "data": {
+        "nickname": data[0], 
+        "token": data[1], 
+        "name": data[2], 
+        "targetID": data[3], # null if no task
+        "task": data[4] # null if no task
+    }})
 
 @adminEndpoints.route("/assassins/admin/reviveplayer")
 def displayRevive():
@@ -148,23 +178,24 @@ def displayEditSuccess():
     cur = conn.cursor()
     print(request.form)
 
-    cur.execute("SELECT user_id FROM users WHERE user_password = %s", [request.form['token']])
-    tempToken = cur.fetchone()
-    token = tempToken[0]
+    # cur.execute("SELECT user_id FROM users WHERE user_password = %s", [request.form['token']])
+    # tempToken = cur.fetchone()
+    # token = tempToken[0]
 
-    cur.execute("SELECT user_id FROM users WHERE user_name = %s", [request.form['target']])
-    tempTarget = cur.fetchone()
-    target = tempTarget[0]
+    # cur.execute("SELECT user_id FROM users WHERE user_name = %s", [request.form['target']])
+    # tempTarget = cur.fetchone()
+    # target = tempTarget[0]
 
-    cur.execute("UPDATE users SET user_name = %s, user_nickname = %s WHERE user_id = %s", 
-    (request.form['name'], request.form['nickname'], token))
+    cur.execute("UPDATE users SET user_password = %s, user_name = %s, user_nickname = %s WHERE user_id = %s", 
+    (request.form['token'], request.form['name'], request.form['nickname'], request.form['user_id']))
 
-    cur.execute("DELETE FROM contracts WHERE contract_assid = %s", [token])
+    cur.execute("DELETE FROM contracts WHERE contract_assid = %s", (request.form['user_id'],))
     cur.execute("INSERT INTO contracts (contract_assid, contract_targetid, contracts_task) \
-    VALUES (%s, %s, %s)", [token, target, request.form['task']])
+    VALUES (%s, %s, %s)", [request.form['user_id'], request.form['target'], request.form['task']])
 
     cur.close()
-    return render_template("admin-success.html")
+    # return render_template("admin-success.html")
+    return redirect("/assassins/admin/dashboard?success=Successfully+edited+player!")
 
 # To be done after deleteing conn.
 # @adminEndpoints.route("/assassins/admin/deleteplayersubmit", methods=['POST'])

@@ -18,21 +18,32 @@
                 <br>
             </div>
             <div class="form-group">
+                <label for="token">Player to edit:</label>
+                <select name='user_id' id='user_id' class='form-control' onchange='updateFields()'>
+                    {% for user in users %}
+                        <option value='{{user[0]}}'>{{user[1]}} ({{user[2]}})</option>
+                    {% endfor %}
+                </select>
 
-                <label for="token">Token of player to edit</label>
-                <input type="token" class="form-control" id="token" name = 'token' placeholder="token">
+                <label for="token">Token (for players to log in)</label>
+                <input type="token" class="form-control" id="token" name='token' placeholder="token" required>
 
-                <label for="name">New Name</label>
-                <input type="name" class="form-control" id="name" name = 'name' placeholder="name">
+                <label for="name">Real Name</label>
+                <input type="name" class="form-control" id="name" name='name' placeholder="name" required>
 
-                <label for="nickname">New Nickname</label>
-                <input type="nickname" class="form-control" id="nickname" name = 'nickname' placeholder="nickname">
+                <label for="nickname">Nickname</label>
+                <input type="nickname" class="form-control" id="nickname" name='nickname' placeholder="nickname" required>
 
-                <label for="target">New Target</label>
-                <input type="target" class="form-control" id="target" name = 'target' placeholder="target">
+                <label for="target">Target</label>
+                <!-- <input type="target" class="form-control" id="target" name='target' placeholder="No target"> -->
+                <select name='target' id='target' class='form-control'>
+                    {% for user in users %}
+                        <option value='{{user[0]}}'>{{user[1]}} ({{user[2]}})</option>
+                    {% endfor %}
+                </select>
 
-                <label for="task">New Task</label>
-                <input type="task" class="form-control" id="task" name = 'task' placeholder="task">
+                <label for="task">Task</label>
+                <input type="task" class="form-control" id="task" name='task' placeholder="No task">
             </div>
             <br>
             <div style="text-align: center">
@@ -46,5 +57,40 @@
         <a href='/assassins/admin/dashboard/' class='btn btn-danger'>Back to admin page</a>
     </div>
 </div>
+<script>
+    function updateFields() {
+        document.getElementById("user_id").disabled = true;
+        document.getElementById("token").disabled = true;
+        document.getElementById("name").disabled = true;
+        document.getElementById("nickname").disabled = true;
+        document.getElementById("target").disabled = true;
+        document.getElementById("task").disabled = true;
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                const json = JSON.parse(this.responseText)
+                if (json.status == "ok") {
+                    document.getElementById("user_id").disabled = false;
+                    document.getElementById("token").disabled = false;
+                    document.getElementById("name").disabled = false;
+                    document.getElementById("nickname").disabled = false;
+                    document.getElementById("target").disabled = false;
+                    document.getElementById("task").disabled = false;
+                    
+                    document.getElementById("token").value = json.data.token
+                    document.getElementById("name").value = json.data.name
+                    document.getElementById("nickname").value = json.data.nickname
+                    document.getElementById("target").value = json.data.targetID
+                    document.getElementById("task").value = json.data.task
+                } else {
+                    alert("Not authorised. Please log in")
+                }
+            }
+        }
+        xmlHttp.open("GET", "/assassins/admin/searchUser/"+document.getElementById("user_id").value, true);
+        xmlHttp.send();
+    }
+    updateFields()
+</script>
 </body>
 </html>
