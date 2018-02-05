@@ -21,7 +21,7 @@
         </div>
         </form>
         <div>
-            <input type='submit' value='Back to admin page' class='button' onclick="return back();">
+            <a href='/assassins/admin/dashboard/' class='btn btn-danger'>Back to admin page</a>
         </div>
     </div>
 
@@ -29,10 +29,6 @@
         function submitForm() {
             window.location.href = "/assassins/admin/addplayer" ;
             return false;
-        }
-        function back(){
-            window.location.href = "/assassins/admin";
-            
         }
     </script>
 </body>
