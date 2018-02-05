@@ -13,7 +13,12 @@
     <div>
         <form action='' method='' onsubmit='return submitForm();'>
         <div>
-            Welcome.<br />Please enter your token:
+            Welcome.<br />
+            {%if msg %}
+            Token could not be found. Please try again:
+            {% else %}
+            Please enter your token:
+            {% endif %}
         </div>
         <div>
             <input type='text' name='token' id='token'>

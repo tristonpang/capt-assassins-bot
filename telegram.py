@@ -27,7 +27,9 @@ def telegramUpdate():
         # Send update
         print("Received status update request")
         # Fetch status
-        cur.execute("SELECT users.user_nickname, users.user_alive, count(contracts.contract_complete) FROM users LEFT JOIN contracts ON users.user_id = contracts.contract_assid GROUP BY users.user_id ORDER BY users.user_alive DESC, users.user_nickname")
+        cur.execute("SELECT users.user_nickname, users.user_alive, count(contracts.contract_complete) as numKills \
+        FROM users LEFT JOIN contracts ON users.user_id = contracts.contract_assid \
+        GROUP BY users.user_id ORDER BY users.user_alive DESC, numKills DESC, users.user_nickname")
         users = cur.fetchall()
         outputStr = "*Current Players*\n"
         for user in users:
@@ -49,7 +51,7 @@ def telegramUpdate():
         ORDER BY contracts.contract_complete DESC")
         completedContracts = cur.fetchall()
         for contract in completedContracts:
-            outputStr += contract[0] + " killed " + contract[1] + " ("+contract[3].strftime("%a %d %b, %I:%M %p")+")\n"
+            outputStr += contract[0] + " killed " + contract[1] + " ("+contract[2].strftime("%a %d %b, %I:%M %p")+")\n"
         sendMsg(chatID, outputStr)
     elif "text" in data["message"] and data["message"]["text"][0:6] == "/start":
         user_hash = data["message"]["text"][7:]

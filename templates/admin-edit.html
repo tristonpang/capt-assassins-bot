@@ -20,23 +20,23 @@
             <div class="form-group">
 
                 <label for="token">Token of player to edit</label>
-                <input type="token" class="form-control" id="token" placeholder="token">
+                <input type="token" class="form-control" id="token" name = 'token' placeholder="token">
 
                 <label for="name">New Name</label>
-                <input type="name" class="form-control" id="name" placeholder="name">
+                <input type="name" class="form-control" id="name" name = 'name' placeholder="name">
 
                 <label for="nickname">New Nickname</label>
-                <input type="nickname" class="form-control" id="nickname" placeholder="nickname">
+                <input type="nickname" class="form-control" id="nickname" name = 'nickname' placeholder="nickname">
 
                 <label for="target">New Target</label>
-                <input type="target" class="form-control" id="target" placeholder="target">
+                <input type="target" class="form-control" id="target" name = 'target' placeholder="target">
 
                 <label for="task">New Task</label>
-                <input type="task" class="form-control" id="task" placeholder="task">
+                <input type="task" class="form-control" id="task" name = 'task' placeholder="task">
             </div>
             <br>
             <div style="text-align: center">
-                <input type='submit' value='Submit' class='btn btn-danger' onclick="submitForm()">
+                <input type='submit' value='Submit' class='btn btn-danger'>
             </div>
         </form>
     </div>
@@ -48,12 +48,8 @@
 </div>
 
 <script>
-    function submitForm() {
-        window.location.href = "/assassins/admin/editplayersubmit" ;
-        return false;
-    }
     function back(){
-        window.location.href = "/assassins/admin";
+        window.location.href = "/assassins/admin/dashboard";
     }
 </script>
 </body>
