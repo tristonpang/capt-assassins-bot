@@ -59,7 +59,9 @@ def adminIndex():
     conn = psycopg2.connect(connStr)
     conn.autocommit = True
     cur = conn.cursor()
-    cur.execute("SELECT u1.user_password AS Token, u1.user_name AS Player, u1.user_nickname AS Nickname, c.contracts_task AS task, u2.user_name AS Target, u1.user_alive AS Status FROM users u1, users u2, contracts c WHERE u1.user_id = c.contract_assid AND u2.user_id = c.contract_targetid")
+    cur.execute("SELECT u1.user_password AS Token, u1.user_name AS Player, u1.user_nickname AS Nickname, \
+    c.contracts_task AS task, u2.user_name AS Target, u1.user_alive AS Status FROM users u1, \
+    users u2, contracts c WHERE u1.user_id = c.contract_assid AND u2.user_id = c.contract_targetid")
     data = cur.fetchall()
     cur.close()
     return render_template("admin-info.html", data=data)
@@ -85,17 +87,18 @@ def displaySubmit():
     cur.execute("INSERT into users (user_nickname, user_name, user_password) VALUES (%s, %s, %s)",
                 (request.form['nickname'], request.form['name'], request.form['token']))
     cur.execute("SELECT MAX(user_id) FROM users")
-    tempMaxId = cur.fetchone();
-    maxId = tempMaxId[0];
+    tempMaxId = cur.fetchone()
+    maxId = tempMaxId[0]
 
     cur.execute("SELECT user_id FROM users WHERE user_name = %s", [request.form['target']])
-    tempTarget = cur.fetchone();
-    target = tempTarget[0];
+    tempTarget = cur.fetchone()
+    target = tempTarget[0]
 
     print(maxId)
     print(target)
 
-    cur.execute("INSERT into contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)", [maxId, target, request.form['task']])
+    cur.execute("INSERT into contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)", 
+    [maxId, target, request.form['task']])
 
     cur.close()
     return render_template("admin-success.html")
@@ -122,14 +125,15 @@ def displayReviveSuccess():
     cur.execute("UPDATE users SET user_alive = true WHERE user_password = %s", ([request.form['token']]))
 
     cur.execute("SELECT user_id FROM users WHERE user_password = %s", [request.form['token']])
-    tempToken = cur.fetchone();
-    token = tempToken[0];
+    tempToken = cur.fetchone()
+    token = tempToken[0]
 
     cur.execute("SELECT user_id FROM users WHERE user_name = %s", [request.form['target']])
-    tempTarget = cur.fetchone();
-    target = tempTarget[0];
+    tempTarget = cur.fetchone()
+    target = tempTarget[0]
 
-    cur.execute("INSERT INTO contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)", [token, target, request.form['task']])
+    cur.execute("INSERT INTO contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)", 
+    [token, target, request.form['task']])
 
     print(token)
     print(target)
@@ -145,17 +149,19 @@ def displayEditSuccess():
     print(request.form)
 
     cur.execute("SELECT user_id FROM users WHERE user_password = %s", [request.form['token']])
-    tempToken = cur.fetchone();
-    token = tempToken[0];
+    tempToken = cur.fetchone()
+    token = tempToken[0]
 
     cur.execute("SELECT user_id FROM users WHERE user_name = %s", [request.form['target']])
-    tempTarget = cur.fetchone();
-    target = tempTarget[0];
+    tempTarget = cur.fetchone()
+    target = tempTarget[0]
 
-    cur.execute("UPDATE users SET user_name = %s, user_nickname = %s WHERE user_id = %s", (request.form['name'], request.form['nickname'], token))
+    cur.execute("UPDATE users SET user_name = %s, user_nickname = %s WHERE user_id = %s", 
+    (request.form['name'], request.form['nickname'], token))
 
     cur.execute("DELETE FROM contracts WHERE contract_assid = %s", [token])
-    cur.execute("INSERT INTO contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)", [token, target, request.form['task']])
+    cur.execute("INSERT INTO contracts (contract_assid, contract_targetid, contracts_task) \
+    VALUES (%s, %s, %s)", [token, target, request.form['task']])
 
     cur.close()
     return render_template("admin-success.html")
