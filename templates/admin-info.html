@@ -50,6 +50,8 @@
         <input type='submit' value='Edit Player' class='btn btn-danger' onclick="return editPlayer();">
 
         <input type='submit' value='Revive Player' class='btn btn-danger' onclick="return revivePlayer();">
+
+        <input type='submit' value='Delete Player' class='btn btn-danger' onclick="return deletePlayer();">
     </div>
 </div>
 </body>
@@ -67,6 +69,11 @@
 
     function revivePlayer() {
         window.location.href = "/assassins/admin/reviveplayer";
+        return false;
+    }
+
+    function deletePlayer() {
+        window.location.href = "/assassins/admin/deleteplayer";
         return false;
     }
 </script>
