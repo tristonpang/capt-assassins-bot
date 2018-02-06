@@ -73,7 +73,7 @@ def adminIndex():
     users u2, contracts c WHERE u1.user_id = c.contract_assid AND u2.user_id = c.contract_targetid")
     data = cur.fetchall()
     cur.close()
-    return render_template("admin-info.html", data=data, success = request.args.get("success"), 
+    return render_template("admin-info.html", data=data, success = request.args.get("success"),
     users = users)
 
 @adminEndpoints.route("/assassins/admin/addplayer/")
@@ -83,7 +83,7 @@ def displayAdmin():
     conn = psycopg2.connect(connStr)
     conn.autocommit = True
     cur = conn.cursor()
-    cur.execute("SELECT user_id, user_name, user_nickname FROM users ORDER BY user_name")
+    cur.execute("SELECT user_password, user_name, user_nickname FROM users ORDER BY user_name")
     data = cur.fetchall()
     cur.close()
     return render_template("admin-add.html", data=data, success = request.args.get("success"));
@@ -118,8 +118,8 @@ def searchUser(userID):
     cur.close()
 
     resp = {"status": "ok", "data": {
-        "nickname": data[0], 
-        "token": data[1], 
+        "nickname": data[0],
+        "token": data[1],
         "name": data[2]
         # "targetID": data[3], # null if no task
         # "task": data[4] # null if no task
@@ -136,7 +136,19 @@ def searchUser(userID):
 
 @adminEndpoints.route("/assassins/admin/reviveplayer/")
 def displayRevive():
-    return render_template("admin-revive.html")
+    if not loggedIn():
+        return redirect("/assassins/admin/?msg=Please+log+in")
+    conn = psycopg2.connect(connStr)
+    conn.autocommit = True
+    cur = conn.cursor()
+    cur.execute("SELECT user_password, user_name, user_nickname FROM users WHERE user_alive = 'f' ORDER BY user_name")
+    reviveData = cur.fetchall()
+
+    cur.execute("SELECT user_password, user_name, user_nickname, user_alive FROM users ORDER BY user_alive DESC, user_name")
+    data = cur.fetchall()
+    cur.close()
+
+    return render_template("admin-revive.html", deadplayer = reviveData, data = data)
 
 @adminEndpoints.route("/assassins/admin/addplayersubmit/", methods=['POST'])
 def displaySubmit():
@@ -157,7 +169,7 @@ def displaySubmit():
 	# print(maxId)
 	# print(target)
 
-	cur.execute("INSERT into contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)", 
+	cur.execute("INSERT into contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)",
 	[maxId, request.form['user_id'], request.form['task']])
 
 	cur.close()
@@ -184,17 +196,18 @@ def displayReviveSuccess():
     target = request.form['target']
     # cur.execute("SELECT FROM users WHERE user_name = %s", target)
 
+
     cur.execute("UPDATE users SET user_alive = true WHERE user_password = %s", ([request.form['token']]))
 
     cur.execute("SELECT user_id FROM users WHERE user_password = %s", [request.form['token']])
     tempToken = cur.fetchone()
     token = tempToken[0]
 
-    cur.execute("SELECT user_id FROM users WHERE user_name = %s", [request.form['target']])
+    cur.execute("SELECT user_id FROM users WHERE user_password = %s", [request.form['target']])
     tempTarget = cur.fetchone()
     target = tempTarget[0]
 
-    cur.execute("INSERT INTO contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)", 
+    cur.execute("INSERT INTO contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)",
     [token, target, request.form['task']])
 
     print(token)
@@ -218,7 +231,7 @@ def displayEditSuccess():
     # tempTarget = cur.fetchone()
     # target = tempTarget[0]
 
-    cur.execute("UPDATE users SET user_password = %s, user_name = %s, user_nickname = %s WHERE user_id = %s", 
+    cur.execute("UPDATE users SET user_password = %s, user_name = %s, user_nickname = %s WHERE user_id = %s",
     (request.form['token'], request.form['name'], request.form['nickname'], request.form['user_id']))
 
     cur.execute("DELETE FROM contracts WHERE contract_assid = %s AND contract_complete = NULL", (request.form['user_id'],))

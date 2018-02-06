@@ -5,8 +5,8 @@
     <meta name="viewport" content="initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
-    <link rel="stylesheet" href="../static/css/admin-custom-min.css">
-    <link rel="stylesheet" href="../static/css/admin-style.css" media="screen">
+    <link rel="stylesheet" href="/static/css/admin-custom-min.css">
+    <link rel="stylesheet" href="/static/css/admin-style.css" media="screen">
     <title>Dragon Assassins</title>
 </head>
 <body class = 'animus-bg'>
@@ -19,11 +19,20 @@
             </div>
             <div class="form-group">
 
-                <label for="token">Token of player to revive</label>
-                <input type="token" class="form-control" id="token" name = "token" placeholder="token">
+                <label for="token">Select player to revive:</label>
+                <select name='user_id' id='user_id' class='form-control'>
+                    {% for user in deadplayer %}
+                        <option value='{{user[0]}}'>{{user[1]}} ({{user[2]}})</option>
+                    {% endfor %}
+                </select>
 
-                <label for="target">New Target</label>
-                <input type="target" class="form-control" id="target" name = "target" placeholder="target">
+                <label for="target">Select new target:</label>
+                <select name='user_id' id='user_id' class='form-control'>
+                    {% for user in data %}
+                        <option value='{{user[0]}}'>{{user[1]}} ({{user[2]}}) {% if user[3] %} {% else %} -DEAD {% endif %}</option>
+                    {% endfor %}
+                </select>
+
 
                 <label for="task">New Task</label>
                 <input type="task" class="form-control" id="task" name = "task" placeholder="task">
