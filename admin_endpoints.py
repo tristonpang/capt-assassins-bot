@@ -113,7 +113,7 @@ def searchUser(userID):
     data = cur.fetchone()
 
     cur.execute("SELECT contract_targetid, contracts_task FROM contracts WHERE \
-    contract_assid = %s AND contract_complete IS NOT NULL", (userID,))
+    contract_assid = %s AND contract_complete IS NULL", (userID,))
     task = cur.fetchone()
     cur.close()
 
