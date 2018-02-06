@@ -57,9 +57,11 @@ def telegramUpdate():
         user_hash = data["message"]["text"][7:]
         #retrieve associated user_id, store tele_chat_id
         cur.execute("SELECT user_id FROM tele_ids WHERE tele_hash = %s", (user_hash,))
-        user_id = cur.fetchone()[0]
-        cur.execute("UPDATE users SET user_telegram = %s WHERE user_id = %s", (chatID, user_id,))
-        cur.execute("DELETE FROM tele_ids WHERE user_id = %s", (user_id,))
+        data = cur.fetchone()
+        if data is not None:
+            user_id = data[0]
+            cur.execute("UPDATE users SET user_telegram = %s WHERE user_id = %s", (chatID, user_id,))
+            cur.execute("DELETE FROM tele_ids WHERE user_id = %s", (user_id,))
     
     cur.close()
 
