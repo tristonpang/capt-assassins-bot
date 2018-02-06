@@ -78,7 +78,15 @@ def adminIndex():
 
 @adminEndpoints.route("/assassins/admin/addplayer")
 def displayAdmin():
-    return render_template("admin-add.html")
+    if not loggedIn():
+        return redirect("/assassins/admin/?msg=Please+log+in")
+    conn = psycopg2.connect(connStr)
+    conn.autocommit = True
+    cur = conn.cursor()
+    cur.execute("SELECT user_id, user_name, user_nickname FROM users ORDER BY user_name")
+    data = cur.fetchall()
+    cur.close()
+    return render_template("admin-add.html", data=data, success = request.args.get("success"));
 
 @adminEndpoints.route("/assassins/admin/editplayer")
 def displayEdit():
