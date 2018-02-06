@@ -100,6 +100,18 @@ def displayEdit():
     cur.close()
     return render_template("admin-edit.html", users = data)
 
+@adminEndpoints.route("/assassins/admin/deleteplayer/")
+def displayDelete():
+    if not loggedIn():
+        return redirect("/assassins/admin/?msg=Please+log+in")
+    conn = psycopg2.connect(connStr)
+    conn.autocommit = True
+    cur = conn.cursor()
+    cur.execute("SELECT user_id, user_name, user_nickname FROM users ORDER BY user_name")
+    data = cur.fetchall()
+    cur.close()
+    return render_template("admin-delete.html", users = data)
+
 @adminEndpoints.route("/assassins/admin/searchUser/<userID>/")
 def searchUser(userID):
     if not loggedIn():
