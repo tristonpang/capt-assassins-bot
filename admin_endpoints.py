@@ -140,32 +140,6 @@ def displayRevive():
 
 @adminEndpoints.route("/assassins/admin/addplayersubmit/", methods=['POST'])
 def displaySubmit():
-<<<<<<< HEAD
-    conn = psycopg2.connect(connStr)
-    conn.autocommit = True
-    cur = conn.cursor()
-    print(request.form)
-    cur.execute("INSERT into users (user_nickname, user_name, user_password) VALUES (%s, %s, %s)",
-                (request.form['nickname'], request.form['name'], request.form['token']))
-    cur.execute("SELECT MAX(user_id) FROM users")
-    tempMaxId = cur.fetchone()
-    maxId = tempMaxId[0]
-
-    cur.execute("SELECT user_id FROM users WHERE user_name = %s", [request.form['target']])
-    tempTarget = cur.fetchone()
-    target = tempTarget[0]
-
-    print(maxId)
-    print(target)
-
-    cur.execute("INSERT into contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)", 
-    [maxId, target, request.form['task']])
-
-    cur.close()
-    return render_template("admin-success.html")
-
-@adminEndpoints.route("/assassins/admin/deleteplayersubmit/", methods=['POST'])
-=======
 	conn = psycopg2.connect(connStr)
 	conn.autocommit = True
 	cur = conn.cursor()
@@ -190,7 +164,6 @@ def displaySubmit():
 	return render_template("admin-success.html")
 
 @adminEndpoints.route("/assassins/admin/deleteplayersubmit", methods=['POST'])
->>>>>>> afa4035c08df9a46b68d09021300e86f55a2425a
 def displayDelSuccess():
     if not loggedIn():
         return redirect("/assassins/admin/?msg=Please+log+in")
