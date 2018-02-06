@@ -20,15 +20,36 @@
     <div class='alert alert-success'>{{success}}</div>
     {% endif %}
     <div>
+        <table class ="table table-hover table-active">
+            <thead>
+                <tr>
+                    <th scope = "col">Real Name</th>
+                    <th scope = "col">Nickname</th>
+                    <th scope = "col">Token</th>
+                    <th scope = "col">Alive?</th>
+                    <th scope = "col">Kills</th>
+                </tr>
+            </thead>
+            {% for row in users %}
+                <tr>
+                    {% for d in row %}
+
+                        <td>{{ d }}</td>
+
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+            
         <table id="playerdata" class ="table table-hover table-active">
             <thead>
             <tr>
-                <th scope = "col">Token</th>
-                <th scope = "col">Player</th>
-                <th scope = "col">Nickname</th>
+                <th scope = "col">Assassin Name</th>
+                <th scope = "col">Assassin Nickname</th>
                 <th scope = "col">Task</th>
-                <th scope = "col">Target</th>
-                <th scope = "col">Alive?</th>
+                <th scope = "col">Target Name</th>
+                <th scope = "col">Target Nickname</th>
+                <th scope = "col">Completed</th>
             </tr>
             </thead>
             {% for row in data %}
@@ -45,6 +66,7 @@
 
     <div style="text-align:center">
         </br>
+<<<<<<< HEAD
         <input type='submit' value='Add Player' class='btn btn-danger' onclick="return addPlayer();">
 
         <input type='submit' value='Edit Player' class='btn btn-danger' onclick="return editPlayer();">
@@ -77,4 +99,12 @@
         return false;
     }
 </script>
+=======
+        <a href='/assassins/admin/addplayer/' class='btn btn-danger'>Add Player</a>
+        <a href='/assassins/admin/editplayer/' class='btn btn-danger'>Edit Player</a>
+        <a href='/assassins/admin/reviveplayer/' class='btn btn-danger'>Revive Player</a>
+    </div>
+</div>
+</body>
+>>>>>>> 3142691793755f51a1b2da759a989f0ec5db2319
 </html>

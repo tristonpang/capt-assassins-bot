@@ -55,33 +55,38 @@ def adminLogout():
 
 @adminEndpoints.route("/assassins/admin/dashboard/")
 def adminIndex():
-	if not loggedIn():
-		return redirect("/assassins/admin/?msg=Please+log+in")
-	conn = psycopg2.connect(connStr)
-	conn.autocommit = True
-	cur = conn.cursor()
-	cur.execute("SELECT u1.user_password AS Token, u1.user_name AS Player, u1.user_nickname AS Nickname, \
-	c.contracts_task AS task, u2.user_name AS Target, u1.user_alive AS Status FROM users u1, \
-	users u2, contracts c WHERE u1.user_id = c.contract_assid AND u2.user_id = c.contract_targetid")
-	data = cur.fetchall()
-	cur.close()
-	return render_template("admin-info.html", data=data, success = request.args.get("success"))
+    if not loggedIn():
+        return redirect("/assassins/admin/?msg=Please+log+in")
+    conn = psycopg2.connect(connStr)
+    conn.autocommit = True
+    cur = conn.cursor()
+
+    cur.execute("SELECT users.user_name, users.user_nickname, users.user_password, \
+    users.user_alive, count(contracts.contract_complete) as numKills \
+    FROM users LEFT JOIN contracts ON users.user_id = contracts.contract_assid \
+    GROUP BY users.user_id ORDER BY users.user_alive DESC, numKills DESC, users.user_name")
+    users = cur.fetchall()
+
+
+    cur.execute("SELECT u1.user_name AS Player, u1.user_nickname AS Nickname, \
+    c.contracts_task AS task, u2.user_name, u2.user_nickname, c.contract_complete FROM users u1, \
+    users u2, contracts c WHERE u1.user_id = c.contract_assid AND u2.user_id = c.contract_targetid")
+    data = cur.fetchall()
+    cur.close()
+    return render_template("admin-info.html", data=data, success = request.args.get("success"), 
+    users = users)
 
 @adminEndpoints.route("/assassins/admin/addplayer")
 def displayAdmin():
-	return render_template("admin-add.html")
-
-@adminEndpoints.route("/assassins/admin/deleteplayer")
-def displayDelete():
-	if not loggedIn():
-		return redirect("/assassins/admin/?msg=Please+log+in")
-	conn = psycopg2.connect(connStr)
-	conn.autocommit = True
-	cur = conn.cursor()
-	cur.execute("SELECT user_id, user_name, user_nickname FROM users ORDER BY user_name")
-	data = cur.fetchall()
-	cur.close()
-	return render_template("admin-delete.html", users = data)
+    if not loggedIn():
+        return redirect("/assassins/admin/?msg=Please+log+in")
+    conn = psycopg2.connect(connStr)
+    conn.autocommit = True
+    cur = conn.cursor()
+    cur.execute("SELECT user_id, user_name, user_nickname FROM users ORDER BY user_name")
+    data = cur.fetchall()
+    cur.close()
+    return render_template("admin-add.html", data=data, success = request.args.get("success"));
 
 @adminEndpoints.route("/assassins/admin/editplayer")
 def displayEdit():
