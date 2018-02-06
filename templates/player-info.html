@@ -5,8 +5,8 @@
     <meta name="viewport" content="initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
-    <link rel="stylesheet" href="/assassins/static/css/normalize.css">
-    <link rel="stylesheet" href="/assassins/static/css/player-style.css">
+    <link rel="stylesheet" href="/static/css/normalize.css">
+    <link rel="stylesheet" href="/static/css/player-style.css">
     <script src="https://use.fontawesome.com/releases/v5.0.6/js/brands.js"></script>
     <script src="https://use.fontawesome.com/releases/v5.0.6/js/fontawesome.js"></script>
     <title>Dragon Assassins</title>
@@ -21,11 +21,17 @@
             <a class='button tele-button' href='https://telegram.me/capt_assassins_bot?start={{user_hash}}'><i class='fab fa-telegram-plane'></i>&nbsp;&nbsp;Link Telegram Account</a>
             </div>
         {% endif %}
+        {% if msg %}
+        <div class='alert'>
+            {{msg}}
+        </div>
+        {% endif %}
         {% if user_alive %}
-            {% if task_desc %}
+            {% if task %}
             <p>Your mission, should you choose to accept it, is to assassinate
                 <span class='highlight'>{{target}}</span> by <span class='highlight'>{{task}}</span>.</p>
-            <p>Once you have completed your task, lock it in by clicking the button below.</p>
+            <p>Once you have completed your task, contact the game masters for confirmation before 
+                clicking on the button below.</p>
             <a class='button' href='/assassins/{{token}}/kill'>Contract completed</a>
             {% else %}
             <p>Looks like you don't have any pending contracts!</p>

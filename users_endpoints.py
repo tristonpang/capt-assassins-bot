@@ -14,7 +14,7 @@ usersEndpoints = Blueprint('usersEndpoints', __name__, template_folder='template
 def index():
     return render_template("player-login.html", msg = request.args.get("msg"))
 
-@usersEndpoints.route("/assassins/<token>")
+@usersEndpoints.route("/assassins/<token>/")
 def displayPage(token):
     conn = psycopg2.connect(connStr)
     conn.autocommit = True
@@ -60,9 +60,10 @@ def displayPage(token):
 
     #slice data, add into return statement
     return render_template("player-info.html", token = token, user_alive = user_alive, 
-        user_nick = user_nickname, user_name = user_name, task = task_desc, target = target_name, user_hash = user_hash)
+        user_nick = user_nickname, user_name = user_name, task = task_desc, target = target_name, user_hash = user_hash, 
+        msg = request.args.get("msg"))
 
-@usersEndpoints.route("/assassins/<token>/kill")
+@usersEndpoints.route("/assassins/<token>/kill/")
 def killPage(token):
     conn = psycopg2.connect(connStr)
     conn.autocommit = True
@@ -97,4 +98,5 @@ def killPage(token):
     
     cur.close()
 
-    return render_template("player-killconfirmed.html", dead_target = old_target_name)
+    # return render_template("player-killconfirmed.html", dead_target = old_target_name)
+    return redirect("/assassins/" + token + "/?msg=You+have+assassinated+"+old_target_name+".")

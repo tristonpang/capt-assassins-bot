@@ -60,15 +60,24 @@ def adminIndex():
     conn = psycopg2.connect(connStr)
     conn.autocommit = True
     cur = conn.cursor()
-    cur.execute("SELECT u1.user_password AS Token, u1.user_name AS Player, u1.user_nickname AS Nickname, \
-    c.contracts_task AS task, u2.user_name AS Target, u1.user_alive AS Status FROM users u1, \
+
+    cur.execute("SELECT users.user_name, users.user_nickname, users.user_password, \
+    users.user_alive, count(contracts.contract_complete) as numKills \
+    FROM users LEFT JOIN contracts ON users.user_id = contracts.contract_assid \
+    GROUP BY users.user_id ORDER BY users.user_alive DESC, numKills DESC, users.user_name")
+    users = cur.fetchall()
+
+
+    cur.execute("SELECT u1.user_name AS Player, u1.user_nickname AS Nickname, \
+    c.contracts_task AS task, u2.user_name, u2.user_nickname, c.contract_complete FROM users u1, \
     users u2, contracts c WHERE u1.user_id = c.contract_assid AND u2.user_id = c.contract_targetid")
     data = cur.fetchall()
     cur.close()
-    return render_template("admin-info.html", data=data, success = request.args.get("success"))
+    return render_template("admin-info.html", data=data, success = request.args.get("success"),
+    users = users)
 
-@adminEndpoints.route("/assassins/admin/addplayer")
-def displayAdd():
+@adminEndpoints.route("/assassins/admin/addplayer/")
+def displayAdmin():
     if not loggedIn():
         return redirect("/assassins/admin/?msg=Please+log+in")
     conn = psycopg2.connect(connStr)
@@ -79,7 +88,7 @@ def displayAdd():
     cur.close()
     return render_template("admin-add.html", data=data, success = request.args.get("success"));
 
-@adminEndpoints.route("/assassins/admin/editplayer")
+@adminEndpoints.route("/assassins/admin/editplayer/")
 def displayEdit():
     if not loggedIn():
         return redirect("/assassins/admin/?msg=Please+log+in")
@@ -91,7 +100,7 @@ def displayEdit():
     cur.close()
     return render_template("admin-edit.html", users = data)
 
-@adminEndpoints.route("/assassins/admin/searchUser/<userID>")
+@adminEndpoints.route("/assassins/admin/searchUser/<userID>/")
 def searchUser(userID):
     if not loggedIn():
         return json.dumps({"status": "not-authorised"})
@@ -99,20 +108,33 @@ def searchUser(userID):
     conn.autocommit = True
     cur = conn.cursor()
     cur.execute("SELECT users.user_nickname, users.user_password, \
-    users.user_name, contracts.contract_targetid, contracts.contracts_task \
-    FROM users LEFT JOIN contracts ON users.user_id = contracts.contract_assid WHERE \
-    users.user_id = %s", (userID,))
+    users.user_name \
+    FROM users WHERE users.user_id = %s ", (userID,))
     data = cur.fetchone()
-    cur.close()
-    return json.dumps({"status": "ok", "data": {
-        "nickname": data[0], 
-        "token": data[1], 
-        "name": data[2], 
-        "targetID": data[3], # null if no task
-        "task": data[4] # null if no task
-    }})
 
-@adminEndpoints.route("/assassins/admin/reviveplayer")
+    cur.execute("SELECT contract_targetid, contracts_task FROM contracts WHERE \
+    contract_assid = %s AND contract_complete IS NOT NULL", (userID,))
+    task = cur.fetchone()
+    cur.close()
+
+    resp = {"status": "ok", "data": {
+        "nickname": data[0],
+        "token": data[1],
+        "name": data[2]
+        # "targetID": data[3], # null if no task
+        # "task": data[4] # null if no task
+    }}
+
+    if task is not None:
+        resp["data"]["targetID"]= task[0]
+        resp["data"]["task"] = task[1]
+    else:
+        resp["data"]["targetID"] = None
+        resp["data"]["task"] = None
+
+    return json.dumps(resp)
+
+@adminEndpoints.route("/assassins/admin/reviveplayer/")
 def displayRevive():
     if not loggedIn():
         return redirect("/assassins/admin/?msg=Please+log+in")
@@ -128,42 +150,44 @@ def displayRevive():
 
     return render_template("admin-revive.html", deadplayer = reviveData, data = data)
 
-@adminEndpoints.route("/assassins/admin/addplayersubmit", methods=['POST'])
+@adminEndpoints.route("/assassins/admin/addplayersubmit/", methods=['POST'])
 def displaySubmit():
-    conn = psycopg2.connect(connStr)
-    conn.autocommit = True
-    cur = conn.cursor()
-    print(request.form)
-    cur.execute("INSERT into users (user_nickname, user_name, user_password) VALUES (%s, %s, %s)",
-                (request.form['nickname'], request.form['name'], request.form['token']))
-    cur.execute("SELECT MAX(user_id) FROM users")
-    tempMaxId = cur.fetchone()
-    maxId = tempMaxId[0]
+	conn = psycopg2.connect(connStr)
+	conn.autocommit = True
+	cur = conn.cursor()
+	print(request.form)
+	cur.execute("INSERT into users (user_nickname, user_name, user_password) VALUES (%s, %s, %s)",
+				(request.form['nickname'], request.form['name'], request.form['token']))
+	cur.execute("SELECT MAX(user_id) FROM users")
+	tempMaxId = cur.fetchone()
+	maxId = tempMaxId[0]
 
-    cur.execute("SELECT user_id FROM users WHERE user_name = %s", [request.form['target']])
-    tempTarget = cur.fetchone()
-    target = tempTarget[0]
+	# cur.execute("SELECT user_id FROM users WHERE user_name = %s", [request.form['target']])
+	# tempTarget = cur.fetchone()
+	# target = tempTarget[0]
 
-    print(maxId)
-    print(target)
+	# print(maxId)
+	# print(target)
 
-    cur.execute("INSERT into contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)", 
-    [maxId, target, request.form['task']])
+	cur.execute("INSERT into contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)",
+	[maxId, request.form['user_id'], request.form['task']])
 
-    cur.close()
-    return render_template("admin-success.html")
+	cur.close()
+	return render_template("admin-success.html")
 
 @adminEndpoints.route("/assassins/admin/deleteplayersubmit", methods=['POST'])
 def displayDelSuccess():
+    if not loggedIn():
+        return redirect("/assassins/admin/?msg=Please+log+in")
     conn = psycopg2.connect(connStr)
     conn.autocommit = True
     cur = conn.cursor()
-    print(request.form)
-    cur.execute("DELETE FROM users WHERE user_password = %s", (request.form['exampleInputToken']))
+    cur.execute("DELETE FROM contracts WHERE contract_assid = %s OR contract_targetid = %s", (request.form['user_id'], request.form['user_id']))
+    cur.execute("DELETE FROM users WHERE user_id = %s", ([request.form['user_id']]))
     cur.close()
-    return render_template("admin-deletesuccess.html")
+    return render_template("admin-success.html")
 
-@adminEndpoints.route("/assassins/admin/reviveplayersubmit", methods=['POST'])
+@adminEndpoints.route("/assassins/admin/reviveplayersubmit/", methods=['POST'])
 def displayReviveSuccess():
     conn = psycopg2.connect(connStr)
     conn.autocommit = True
@@ -183,7 +207,7 @@ def displayReviveSuccess():
     tempTarget = cur.fetchone()
     target = tempTarget[0]
 
-    cur.execute("INSERT INTO contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)", 
+    cur.execute("INSERT INTO contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)",
     [token, target, request.form['task']])
 
     print(token)
@@ -192,7 +216,7 @@ def displayReviveSuccess():
     cur.close()
     return render_template("admin-success.html")
 
-@adminEndpoints.route("/assassins/admin/editplayersubmit", methods=['POST'])
+@adminEndpoints.route("/assassins/admin/editplayersubmit/", methods=['POST'])
 def displayEditSuccess():
     conn = psycopg2.connect(connStr)
     conn.autocommit = True
@@ -207,7 +231,7 @@ def displayEditSuccess():
     # tempTarget = cur.fetchone()
     # target = tempTarget[0]
 
-    cur.execute("UPDATE users SET user_password = %s, user_name = %s, user_nickname = %s WHERE user_id = %s", 
+    cur.execute("UPDATE users SET user_password = %s, user_name = %s, user_nickname = %s WHERE user_id = %s",
     (request.form['token'], request.form['name'], request.form['nickname'], request.form['user_id']))
 
     cur.execute("DELETE FROM contracts WHERE contract_assid = %s AND contract_complete = NULL", (request.form['user_id'],))
