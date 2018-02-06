@@ -141,10 +141,10 @@ def displayRevive():
     conn = psycopg2.connect(connStr)
     conn.autocommit = True
     cur = conn.cursor()
-    cur.execute("SELECT user_password, user_name, user_nickname FROM users WHERE user_alive = 'f' ORDER BY user_name")
+    cur.execute("SELECT user_id, user_name, user_nickname FROM users WHERE user_alive = 'f' ORDER BY user_name")
     reviveData = cur.fetchall()
 
-    cur.execute("SELECT user_password, user_name, user_nickname, user_alive FROM users ORDER BY user_alive DESC, user_name")
+    cur.execute("SELECT user_id, user_name, user_nickname, user_alive FROM users ORDER BY user_alive DESC, user_name")
     data = cur.fetchall()
     cur.close()
 
@@ -175,7 +175,7 @@ def displaySubmit():
 	cur.close()
 	return render_template("admin-success.html")
 
-@adminEndpoints.route("/assassins/admin/deleteplayersubmit", methods=['POST'])
+@adminEndpoints.route("/assassins/admin/deleteplayersubmit/", methods=['POST'])
 def displayDelSuccess():
     if not loggedIn():
         return redirect("/assassins/admin/?msg=Please+log+in")
@@ -193,26 +193,12 @@ def displayReviveSuccess():
     conn.autocommit = True
     cur = conn.cursor()
     # String of target in var
-    target = request.form['target']
     # cur.execute("SELECT FROM users WHERE user_name = %s", target)
-
-
-    cur.execute("UPDATE users SET user_alive = true WHERE user_password = %s", ([request.form['token']]))
-
-    cur.execute("SELECT user_id FROM users WHERE user_password = %s", [request.form['token']])
-    tempToken = cur.fetchone()
-    token = tempToken[0]
-
-    cur.execute("SELECT user_id FROM users WHERE user_password = %s", [request.form['target']])
-    tempTarget = cur.fetchone()
-    target = tempTarget[0]
-
+    cur.execute("UPDATE users SET user_alive = true WHERE user_id = %s", ([request.form['user_id']]))
+    token = request.form['user_id']
+    target = request.form['target_id']
     cur.execute("INSERT INTO contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)",
     [token, target, request.form['task']])
-
-    print(token)
-    print(target)
-    print(request.form['task'])
     cur.close()
     return render_template("admin-success.html")
 

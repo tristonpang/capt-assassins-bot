@@ -12,7 +12,7 @@
 <body class = 'animus-bg'>
 <div>
     <div class="jumbotron">
-        <form action='/assassins/admin/reviveplayersubmit' method='POST'>
+        <form action='/assassins/admin/reviveplayersubmit/' method='POST'>
             <div style="text-align: center">
                 <h1>Revive Player</h1>
                 <br>
@@ -20,14 +20,14 @@
             <div class="form-group">
 
                 <label for="token">Select player to revive:</label>
-                <select name='user_id' id='user_id' class='form-control'>
+                <select name='user_id' id='target_id' class='form-control'>
                     {% for user in deadplayer %}
                         <option value='{{user[0]}}'>{{user[1]}} ({{user[2]}})</option>
                     {% endfor %}
                 </select>
 
                 <label for="target">Select new target:</label>
-                <select name='user_id' id='user_id' class='form-control'>
+                <select name='target_id' id='target_id' class='form-control'>
                     {% for user in data %}
                         <option value='{{user[0]}}'>{{user[1]}} ({{user[2]}}) {% if user[3] %} {% else %} -DEAD {% endif %}</option>
                     {% endfor %}
