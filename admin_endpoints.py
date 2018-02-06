@@ -137,15 +137,15 @@ def displaySubmit():
 	tempMaxId = cur.fetchone()
 	maxId = tempMaxId[0]
 
-	cur.execute("SELECT user_id FROM users WHERE user_name = %s", [request.form['target']])
-	tempTarget = cur.fetchone()
-	target = tempTarget[0]
+	# cur.execute("SELECT user_id FROM users WHERE user_name = %s", [request.form['target']])
+	# tempTarget = cur.fetchone()
+	# target = tempTarget[0]
 
-	print(maxId)
-	print(target)
+	# print(maxId)
+	# print(target)
 
 	cur.execute("INSERT into contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)", 
-	[maxId, target, request.form['task']])
+	[maxId, request.form['user_id'], request.form['task']])
 
 	cur.close()
 	return render_template("admin-success.html")
