@@ -75,5 +75,5 @@ def fetchStatus(cur):
     ORDER BY contracts.contract_complete DESC")
     completedContracts = cur.fetchall()
     for contract in completedContracts:
-        outputStr += contract[0] + " killed " + contract[1] + " ("+contract[2].strftime("%a %d %b, %I:%M %p")+")\n"
+        outputStr += "`"+contract[0] + "` killed `" + contract[1] + "` ("+contract[2].strftime("%a %d %b, %I:%M %p")+")\n"
     return outputStr
