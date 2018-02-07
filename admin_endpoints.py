@@ -229,7 +229,7 @@ def displayEditSuccess():
     cur.execute("UPDATE users SET user_password = %s, user_name = %s, user_nickname = %s WHERE user_id = %s",
                 (request.form['token'], request.form['name'], request.form['nickname'], request.form['user_id']))
 
-    cur.execute("DELETE FROM contracts WHERE contract_assid = %s AND contract_complete = NULL", (request.form['user_id'],))
+    cur.execute("DELETE FROM contracts WHERE contract_assid = %s AND contract_complete is NULL", (request.form['user_id'],))
     cur.execute("INSERT INTO contracts (contract_assid, contract_targetid, contracts_task) \
     VALUES (%s, %s, %s)", [request.form['user_id'], request.form['target'], request.form['task']])
 
