@@ -94,10 +94,10 @@ def killPage(token):
 
     for teleUser in telegramIDs:
         if teleUser[0] == target_id:
-            sendMsg(teleUser[1], "*Oh no!* You have been killed by _" + user_nickname + "_!")
+            sendMsg(teleUser[2], "*Oh no!* You have been killed by _" + user_nickname + "_!")
         else:
-            sendMsg(teleUser[1], "_There has been an assassination._")
-        sendMsg(teleUser[1], currStatus)
+            sendMsg(teleUser[2], "_There has been an assassination._")
+        sendMsg(teleUser[2], currStatus)
     
     cur.close()
 
