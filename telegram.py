@@ -57,7 +57,7 @@ def fetchStatus(cur):
     users = cur.fetchall()
     outputStr = "*Current Players*\n"
     for user in users:
-        userData = user[0] + " ("
+        userData = "`" + user[0] + "` ("
         if user[2] != 1:
             userData += str(user[2])+" kills"
         else:
