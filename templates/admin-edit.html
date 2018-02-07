@@ -11,6 +11,9 @@
 </head>
 <body class = 'animus-bg'>
 <div>
+    {% if success %}
+        <div class='alert alert-success'>{{success}}</div>
+    {% endif %}
     <div class="jumbotron">
         <form action='/assassins/admin/editplayersubmit/' method='POST'>
             <div style="text-align: center">
@@ -76,7 +79,7 @@
                     document.getElementById("nickname").disabled = false;
                     document.getElementById("target").disabled = false;
                     document.getElementById("task").disabled = false;
-                    
+
                     document.getElementById("token").value = json.data.token
                     document.getElementById("name").value = json.data.name
                     document.getElementById("nickname").value = json.data.nickname

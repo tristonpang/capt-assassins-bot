@@ -12,6 +12,9 @@
 <body class = 'animus-bg'>
 
 <div>
+    {% if success %}
+        <div class='alert alert-success'>{{success}}</div>
+    {% endif %}
     <div class="jumbotron">
         <form action='/assassins/admin/addplayersubmit/' method='POST' >
             <div style="text-align: center">

@@ -10,36 +10,48 @@
     <title>Dragon Assassins</title>
 </head>
 <body class = 'animus-bg'>
-    <div>
-       <form action='/assassins/admin/deleteplayersubmit/' method='POST'>
-  <fieldset>
-    <div class="form-group">
-      <label for="token">Select player to delete:</label>
-                <select name='user_id' id='user_id' class='form-control' onchange='updateFields()'>
-                    {% for user in users %}
-                        <option value='{{user[0]}}'>{{user[1]}} ({{user[2]}})</option>
-                    {% endfor %}
-                </select>
-    </div>
-  </fieldset>
-       <div>
-            <input type="submit" value="submit" class="btn btn-danger"">
-       </div>
-       </form>
-           <br>
-        <div>
-            <input type='submit' value='Back to admin page' class='btn btn-danger' onclick="return back();">
-        </div>
-    </div>
+<div>
+    {% if success %}
+        <div class='alert alert-success'>{{success}}</div>
+    {% endif %}
+    <div class = 'jumbotron'>
 
-    <script>
-        function submitForm() {
-            window.location.href = "/assassins/admin/deleteplayersubmit" ;
-            return false;
-        }
-        function back(){
-            window.location.href = "/assassins/admin";
-        }
-    </script>
+        <form action='/assassins/admin/deleteplayersubmit/' method='POST'>
+            <div style="text-align: center">
+                <h1>Delete Player</h1>
+                <br>
+            </div>
+            <fieldset>
+                <div class="form-group">
+                    <label for="token">Select player to delete:</label>
+                    <select name='user_id' id='user_id' class='form-control' onchange='updateFields()'>
+                        {% for user in users %}
+                            <option value='{{user[0]}}'>{{user[1]}} ({{user[2]}})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </fieldset>
+            <div style="text-align: center">
+                <br>
+                <input type="submit" value="submit" class="btn btn-danger"">
+            </div>
+        </form>
+    </div>
+    <div style="text-align: center">
+        <br>
+        <input type='submit' value='Back to admin page' class='btn btn-danger' onclick="return back();">
+    </div>
+</div>
+
+
+<script>
+    function submitForm() {
+        window.location.href = "/assassins/admin/deleteplayersubmit" ;
+        return false;
+    }
+    function back(){
+        window.location.href = "/assassins/admin";
+    }
+</script>
 </body>
 </html>
