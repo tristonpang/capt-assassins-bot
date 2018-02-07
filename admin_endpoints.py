@@ -98,7 +98,7 @@ def displayEdit():
     cur.execute("SELECT user_id, user_name, user_nickname FROM users ORDER BY user_name")
     data = cur.fetchall()
     cur.close()
-    return render_template("admin-edit.html", users = data)
+    return render_template("admin-edit.html", users = data, success = request.args.get("success"))
 
 @adminEndpoints.route("/assassins/admin/deleteplayer/")
 def displayDelete():
@@ -110,7 +110,7 @@ def displayDelete():
     cur.execute("SELECT user_id, user_name, user_nickname FROM users ORDER BY user_name")
     data = cur.fetchall()
     cur.close()
-    return render_template("admin-delete.html", users = data)
+    return render_template("admin-delete.html", users = data, success = request.args.get("success"))
 
 @adminEndpoints.route("/assassins/admin/searchUser/<userID>/")
 def searchUser(userID):
@@ -160,10 +160,10 @@ def displayRevive():
     data = cur.fetchall()
     cur.close()
 
-    return render_template("admin-revive.html", deadplayer = reviveData, data = data)
+    return render_template("admin-revive.html", deadplayer = reviveData, data = data, success = request.args.get("success"))
 
 @adminEndpoints.route("/assassins/admin/addplayersubmit/", methods=['POST'])
-def displaySubmit():
+def displayAddSuccess():
     conn = psycopg2.connect(connStr)
     conn.autocommit = True
     cur = conn.cursor()
@@ -179,7 +179,7 @@ def displaySubmit():
                 (maxId, request.form['user_id'], request.form['task']))
 
     cur.close()
-    return render_template("admin-success.html")
+    return redirect("/assassins/admin/addplayer?success=Successfully+added+player!")
 
 @adminEndpoints.route("/assassins/admin/deleteplayersubmit/", methods=['POST'])
 def displayDelSuccess():
@@ -191,7 +191,7 @@ def displayDelSuccess():
     cur.execute("DELETE FROM contracts WHERE contract_assid = %s OR contract_targetid = %s", (request.form['user_id'], request.form['user_id']))
     cur.execute("DELETE FROM users WHERE user_id = %s", ([request.form['user_id']]))
     cur.close()
-    return render_template("admin-success.html")
+    return redirect("/assassins/admin/deleteplayer?success=Successfully+deleted+player!")
 
 @adminEndpoints.route("/assassins/admin/reviveplayersubmit/", methods=['POST'])
 def displayReviveSuccess():
@@ -206,7 +206,7 @@ def displayReviveSuccess():
     cur.execute("INSERT INTO contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)",
                 [token, target, request.form['task']])
     cur.close()
-    return render_template("admin-success.html")
+    return redirect("/assassins/admin/reviveplayer?success=Successfully+revived+player!")
 
 @adminEndpoints.route("/assassins/admin/editplayersubmit/", methods=['POST'])
 def displayEditSuccess():
@@ -232,7 +232,7 @@ def displayEditSuccess():
 
     cur.close()
     # return render_template("admin-success.html")
-    return redirect("/assassins/admin/dashboard?success=Successfully+edited+player!")
+    return redirect("/assassins/admin/editplayer?success=Successfully+edited+player!")
 
 # To be done after deleteing conn.
 # @adminEndpoints.route("/assassins/admin/deleteplayersubmit", methods=['POST'])
