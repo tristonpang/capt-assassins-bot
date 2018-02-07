@@ -76,5 +76,4 @@ def fetchStatus(cur):
     completedContracts = cur.fetchall()
     for contract in completedContracts:
         outputStr += contract[0] + " killed " + contract[1] + " ("+contract[2].strftime("%a %d %b, %I:%M %p")+")\n"
-    cur.close()
     return outputStr
