@@ -248,11 +248,7 @@ def displayEditSuccess():
 
     cur.close()
     # return render_template("admin-success.html")
-<<<<<<< HEAD
     return redirect("/assassins/admin/editplayer?success=Successfully+edited+player!")
-=======
-    return redirect("/assassins/admin/dashboard/?success=Successfully+edited+player!")
->>>>>>> 424a7351c2c716651d4efc4d989075ebc50a478a
 
 # To be done after deleteing conn.
 # @adminEndpoints.route("/assassins/admin/deleteplayersubmit", methods=['POST'])
