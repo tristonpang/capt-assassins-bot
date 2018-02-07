@@ -11,14 +11,22 @@
 </head>
 <body>
     <div>
+        <form action='' method='POST' onsubmit='return submitForm();'>
         <div>
             <p style = "font-size: 25px"> <b>Success!</b> </p>
         </div>
-
+        
+        </form>
         <div>
             <a href='/assassins/admin/dashboard/' class='button'>Back to admin page</a>
         </div>
     </div>
 
+    <script>
+        function submitForm() {
+            window.location.href = "/assassins/admin/addplayer" ;
+            return false;
+        }
+    </script>
 </body>
 </html>

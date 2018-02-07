@@ -1,4 +1,4 @@
-import requests, json, psycopg2, bcrypt, ctypes
+import requests, json, psycopg2, bcrypt
 from flask import Blueprint, request, render_template, redirect, make_response
 from datetime import datetime
 from private_vars import connStr
@@ -177,11 +177,9 @@ def displaySubmit():
 
     cur.execute("INSERT into contracts (contract_assid, contract_targetid, contracts_task) VALUES (%s, %s, %s)",
                 (maxId, request.form['user_id'], request.form['task']))
-    cur.execute("SELECT user_id, user_name, user_nickname FROM users ORDER BY user_name")
-    data = cur.fetchall()
+
     cur.close()
-    ctypes.windll.user32.MessageBoxW(0, "Your text", "Your title", 1)
-    return render_template("admin-add.html", data=data, success = request.args.get("success"));
+    return render_template("admin-success.html")
 
 @adminEndpoints.route("/assassins/admin/deleteplayersubmit/", methods=['POST'])
 def displayDelSuccess():
@@ -193,7 +191,6 @@ def displayDelSuccess():
     cur.execute("DELETE FROM contracts WHERE contract_assid = %s OR contract_targetid = %s", (request.form['user_id'], request.form['user_id']))
     cur.execute("DELETE FROM users WHERE user_id = %s", ([request.form['user_id']]))
     cur.close()
-
     return render_template("admin-success.html")
 
 @adminEndpoints.route("/assassins/admin/reviveplayersubmit/", methods=['POST'])
