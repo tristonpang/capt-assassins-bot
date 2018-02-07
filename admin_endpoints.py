@@ -70,10 +70,26 @@ def adminIndex():
 
     cur.execute("SELECT u1.user_name AS Player, u1.user_nickname AS Nickname, \
     c.contracts_task AS task, u2.user_name, u2.user_nickname, c.contract_complete FROM users u1, \
-    users u2, contracts c WHERE u1.user_id = c.contract_assid AND u2.user_id = c.contract_targetid")
-    data = cur.fetchall()
+    users u2, contracts c WHERE u1.user_id = c.contract_assid AND u2.user_id = c.contract_targetid\
+    ORDER BY c.contract_complete DESC")
+    contracts = cur.fetchall()
     cur.close()
-    return render_template("admin-info.html", data=data, success = request.args.get("success"),
+
+    completedContracts = []
+    upcomingContracts = []
+
+    for contract in contracts:
+        if contract[5] is None:
+            # Not completed yet
+            upcomingContracts.append(contract)
+        else:
+            # Completed
+            contract = list(contract)
+            contract[5] = contract[5].strftime("%a %d %b, %I:%M %p")
+            # contract[5] = 
+            completedContracts.append(contract)
+
+    return render_template("admin-info.html", upcoming = upcomingContracts, completed = completedContracts, success = request.args.get("success"),
                            users = users)
 
 @adminEndpoints.route("/assassins/admin/addplayer/")
@@ -86,7 +102,7 @@ def displayAddPlayer():
     cur.execute("SELECT user_id, user_name, user_nickname FROM users ORDER BY user_name")
     data = cur.fetchall()
     cur.close()
-    return render_template("admin-add.html", data=data, success = request.args.get("success"));
+    return render_template("admin-add.html", data=data, success = request.args.get("success"))
 
 @adminEndpoints.route("/assassins/admin/editplayer/")
 def displayEdit():
@@ -232,7 +248,7 @@ def displayEditSuccess():
 
     cur.close()
     # return render_template("admin-success.html")
-    return redirect("/assassins/admin/dashboard?success=Successfully+edited+player!")
+    return redirect("/assassins/admin/dashboard/?success=Successfully+edited+player!")
 
 # To be done after deleteing conn.
 # @adminEndpoints.route("/assassins/admin/deleteplayersubmit", methods=['POST'])
