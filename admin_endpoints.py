@@ -62,7 +62,7 @@ def adminIndex():
     cur = conn.cursor()
 
     cur.execute("SELECT users.user_name, users.user_nickname, users.user_password, \
-    users.user_alive, count(contracts.contract_complete) as numKills \
+    users.user_alive, count(contracts.contract_complete) as numKills, users.user_telegram \
     FROM users LEFT JOIN contracts ON users.user_id = contracts.contract_assid \
     GROUP BY users.user_id ORDER BY users.user_alive DESC, numKills DESC, users.user_name")
     users = cur.fetchall()

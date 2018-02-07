@@ -29,6 +29,7 @@
                     <th scope = "col">Token</th>
                     <th scope = "col">Status</th>
                     <th scope = "col">Kills</th>
+                    <th scope='col'>Telegram Linked</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,6 +40,7 @@
                     <td><a href='/assassins/{{user[2]}}/' class='btn btn-info'>{{user[2]}}</a></td>
                     <td>{% if user[3] %}Alive{% else %}Dead{% endif %}</td>
                     <td>{{user[4]}}</td>
+                    <td>{% if user[5] %}Yes{% else %}<span class='text-danger'>No</span>{% endif %}</td>
                 </tr>
             {% endfor %}
             </tbody>
