@@ -13,7 +13,7 @@
 
 <div>
     <div class="jumbotron">
-        <form action='/assassins/admin/addplayersubmit' method='POST' >
+        <form action='/assassins/admin/addplayersubmit/' method='POST' >
             <div style="text-align: center">
                 <h1>Add Player</h1>
                 <br>
@@ -28,7 +28,7 @@
                 <label for="token">Token</label>
                 <input type="token" class="form-control" name='token' id="token" placeholder="token">
 
-                <label for="token">Select target:</label>
+                <label for="target">Select target:</label>
                 <select name='user_id' id='user_id' class='form-control'>
                     {% for user in data %}
                         <option value='{{user[0]}}'>{{user[1]}} ({{user[2]}})</option>
