@@ -32,14 +32,14 @@
             </tr>
             </thead>
             <tbody>
-            {% for row in upcoming %}
+            {% for row in pending %}
                 <tr>
                     <td>{{row[0]}} (<code>{{row[1]}}</code>)</td>
                     <td>{{row[3]}} (<code>{{row[4]}}</code>)</td>
                     <td>{{row[2]}}</td>
                     <td>
-                        <a href='/assassins/admin/killConfirm/confirm/{{row[5]}}/' class='btn'>Confirm</a>
-                        <a href='/assassins/admin/killConfirm/reject/{{row[5]}}/' class='btn'>Reject</a>
+                        <a href='/assassins/admin/killConfirm/confirm/{{row[5]}}/' class='btn btn-danger'>Confirm</a>
+                        <a href='/assassins/admin/killConfirm/reject/{{row[5]}}/' class='btn btn-danger'>Reject</a>
                     </td>
                 </tr>
             {% endfor %}
