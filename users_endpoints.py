@@ -77,6 +77,8 @@ def killPage(token):
         cur.execute("UPDATE contracts SET contract_pending_confirm = true where \
         contract_complete is null and contract_assid = %s", player[0])
         # Message the game masters
+        sendMsg(272553166, "An assassination attempt has been logged. Please check the [admin dashboard](https://yenter.io/assassins/admin/dashboard/)!")
+        sendMsg(378439213, "An assassination attempt has been logged. Please check the [admin dashboard](https://yenter.io/assassins/admin/dashboard/)!")
         return redirect("/assassins/" + token + "/?msg=You+have+assassinated+your+target.")
 
     # cur.execute("SELECT users.user_id, contracts.contract_id, contract_targetID, users.user_nickname, \

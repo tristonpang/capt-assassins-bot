@@ -2,7 +2,7 @@ import requests, json, psycopg2, bcrypt
 from flask import Blueprint, request, render_template, redirect, make_response
 from datetime import datetime
 from private_vars import connStr
-from telegram import sendMsg
+from telegram import sendMsg, fetchStatus
 
 adminEndpoints = Blueprint('adminEndpoints', __name__, template_folder='templates')
 
@@ -100,7 +100,7 @@ def adminIndex():
     completed = completedContracts, pending = pendingContracts, 
     success = request.args.get("success"), users = users)
 
-@adminEndpoints.route("/assassins/admin/killConfirm/confirm/<id>/")
+@adminEndpoints.route("/assassins/admin/killConfirm/confirm/<contractID>/")
 def confirmKill(contractID):
     if not loggedIn():
         return redirect("/assassins/admin/?msg=Please+log+in")
@@ -108,18 +108,37 @@ def confirmKill(contractID):
     conn.autocommit = True
     cur = conn.cursor()
 
-    cur.execute("UPDATE contracts SET contract_complete = now() AND contract_pending_confirm \
+    cur.execute("UPDATE contracts SET contract_complete = now(), contract_pending_confirm \
     = false WHERE contract_id = %s AND contract_pending_confirm = true RETURNING contract_assid, contract_targetid", 
     (contractID,))
     contractData = cur.fetchone()
+    if contractData is not None:
+        assID = contractData[0]
+        targetID = contractData[1]
+        cur.execute("UPDATE users SET user_alive = FALSE WHERE user_id = %s", (targetID,))
+        cur.execute("UPDATE contracts SET contract_assID = %s WHERE contract_assID = %s", (assID, targetID))
+        currStatus = fetchStatus(cur)
+        cur.execute("SELECT user_id, user_name, user_telegram FROM users WHERE user_telegram IS NOT NULL")
+        telegramIDs = cur.fetchall()
+
+        for teleUser in telegramIDs:
+            if teleUser[0] == targetID:
+                sendMsg(teleUser[2], "*Oh no!* You have been assassinated.")
+            elif teleUser[1] == assID:
+                sendMsg(teleUser[2], "Your assassination has been confirmed.")
+            else:
+                sendMsg(teleUser[2], "_There has been an assassination._")
+            sendMsg(teleUser[2], currStatus)
 
     # Send the messages out
-    print("received kill confirmation")
+    
     print(contractData)
 
     cur.close()
+    return redirect("/assassins/admin/dashboard/")
     
-@adminEndpoints.route("/assassins/admin/killConfirm/reject/<id>/")
+    
+@adminEndpoints.route("/assassins/admin/killConfirm/reject/<contractID>/")
 def rejectKill(contractID):
     if not loggedIn():
         return redirect("/assassins/admin/?msg=Please+log+in")
@@ -136,9 +155,10 @@ def rejectKill(contractID):
         cur.execute("SELECT user_telegram FROM users WHERE user_id = %s AND user_telegram is not null", (user[0], ))
         tele = cur.fetchone()
         if tele is not None:
-            sendMsg(tele[0], "Your assassination attempt has been rejected")
+            sendMsg(tele[0], "Your assassination attempt has been rejected.")
 
     cur.close()
+    return redirect("/assassins/admin/dashboard/")
 
 @adminEndpoints.route("/assassins/admin/addplayer/")
 def displayAddPlayer():
