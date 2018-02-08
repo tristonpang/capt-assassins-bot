@@ -20,6 +20,32 @@
     <div class='alert alert-dismissible alert-success'>{{success}}</div>
     {% endif %}
     <div>
+        {% if pending %}
+        <h2>Pending Confirmation</h2>
+        <table class ="table table-hover">
+            <thead>
+            <tr>
+                <th scope = "col">Assassin</th>
+                <th scope = "col">Target</th>
+                <th scope = "col">Task</th>
+                <th scope = 'col'>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in upcoming %}
+                <tr>
+                    <td>{{row[0]}} (<code>{{row[1]}}</code>)</td>
+                    <td>{{row[3]}} (<code>{{row[4]}}</code>)</td>
+                    <td>{{row[2]}}</td>
+                    <td>
+                        <a href='/assassins/admin/killConfirm/confirm/{{row[5]}}/' class='btn'>Confirm</a>
+                        <a href='/assassins/admin/killConfirm/reject/{{row[5]}}/' class='btn'>Reject</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
         <h2>Players</h2>
         <table class ="table table-hover">
             <thead>

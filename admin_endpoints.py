@@ -2,6 +2,7 @@ import requests, json, psycopg2, bcrypt
 from flask import Blueprint, request, render_template, redirect, make_response
 from datetime import datetime
 from private_vars import connStr
+from telegram import sendMsg
 
 adminEndpoints = Blueprint('adminEndpoints', __name__, template_folder='templates')
 
@@ -69,19 +70,25 @@ def adminIndex():
 
 
     cur.execute("SELECT u1.user_name AS Player, u1.user_nickname AS Nickname, \
-    c.contracts_task AS task, u2.user_name, u2.user_nickname, c.contract_complete FROM users u1, \
+    c.contracts_task AS task, u2.user_name, u2.user_nickname, c.contract_complete, \
+    c.contract_pending_confirm, c.contract_id FROM users u1, \
     users u2, contracts c WHERE u1.user_id = c.contract_assid AND u2.user_id = c.contract_targetid\
     ORDER BY c.contract_complete DESC")
     contracts = cur.fetchall()
     cur.close()
 
     completedContracts = []
-    upcomingContracts = []
+    currentContracts = []
+    pendingContracts = []
 
     for contract in contracts:
         if contract[5] is None:
             # Not completed yet
-            upcomingContracts.append(contract)
+            if contract[6]:
+                # Pending confirmation
+                pendingContracts.append(contract)
+            else:
+                currentContracts.append(contract)
         else:
             # Completed
             contract = list(contract)
@@ -89,8 +96,49 @@ def adminIndex():
             # contract[5] = 
             completedContracts.append(contract)
 
-    return render_template("admin-info.html", upcoming = upcomingContracts, completed = completedContracts, success = request.args.get("success"),
-                           users = users)
+    return render_template("admin-info.html", upcoming = currentContracts, 
+    completed = completedContracts, pending = pendingContracts, 
+    success = request.args.get("success"), users = users)
+
+@adminEndpoints.route("/assassins/admin/killConfirm/confirm/<id>/")
+def confirmKill(contractID):
+    if not loggedIn():
+        return redirect("/assassins/admin/?msg=Please+log+in")
+    conn = psycopg2.connect(connStr)
+    conn.autocommit = True
+    cur = conn.cursor()
+
+    cur.execute("UPDATE contracts SET contract_complete = now() AND contract_pending_confirm \
+    = false WHERE contract_id = %s AND contract_pending_confirm = true RETURNING contract_assid, contract_targetid", 
+    (contractID,))
+    contractData = cur.fetchone()
+
+    # Send the messages out
+    print("received kill confirmation")
+    print(contractData)
+
+    cur.close()
+    
+@adminEndpoints.route("/assassins/admin/killConfirm/reject/<id>/")
+def rejectKill(contractID):
+    if not loggedIn():
+        return redirect("/assassins/admin/?msg=Please+log+in")
+    conn = psycopg2.connect(connStr)
+    conn.autocommit = True
+    cur = conn.cursor()
+    
+    cur.execute("UPDATE contracts SET contract_pending_confirm = false WHERE \
+    contract_id = %s AND contract_pending_confirm = true RETURNING contract_assid", (contractID, ))
+    user = cur.fetchone()
+    
+    # Notify user
+    if user is not None:
+        cur.execute("SELECT user_telegram FROM users WHERE user_id = %s AND user_telegram is not null", (user[0], ))
+        tele = cur.fetchone()
+        if tele is not None:
+            sendMsg(tele[0], "Your assassination attempt has been rejected")
+
+    cur.close()
 
 @adminEndpoints.route("/assassins/admin/addplayer/")
 def displayAddPlayer():
