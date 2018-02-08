@@ -51,38 +51,6 @@ def sendMsg(id, msg):
         data = {"chat_id": id, "text": msg, "parse_mode" : "Markdown"})
     print(r.text)
 
-@teleBot.route("/testing/")
-def testingMethod():
-    sendKillConfirmMsg(167223959, "Hello testing")
-    return "{}"
-
-def sendKillConfirmMsg(id, msg):
-    keyboard = {
-        "inline_keyboard": [
-            [{
-                "text": "Accept", 
-                "callback_data": json.dumps({
-                    "decision": "accept", 
-                    "id": 3
-                })
-            }], [{
-                "text": "Reject", 
-                "callback_data": json.dumps({
-                    "decision": "reject", 
-                    "id": 3
-                })
-            }]
-        ]
-    }
-
-    r = requests.post(telegramBotURL+"sendMessage", data = {
-        "chat_id": id, 
-        "text": msg, 
-        "parse_mode": "Markdown", 
-        "reply_markup": json.dumps(keyboard)
-    })
-    print(r.text)
-
 def fetchStatus(cur):
     cur.execute("SELECT users.user_nickname, users.user_alive, count(contracts.contract_complete) as numKills \
     FROM users LEFT JOIN contracts ON users.user_id = contracts.contract_assid \
