@@ -28,14 +28,19 @@
         </div>
         {% endif %}
         {% if user_alive %}
-            {% if task %}
-            <p>Your mission, should you choose to accept it, is to assassinate
-                <span class='highlight'>{{target}}</span> by <span class='highlight'>{{task}}</span>.</p>
-            <p>Once you have completed your task, contact the game masters for confirmation before 
-                clicking on the button below.</p>
-            <a class='button' href='/assassins/{{token}}/kill'>Contract completed</a>
+            {% if pending_confirmation %}
+                <p>The game masters have been notified of your kill.</p>
+                <p>Please wait for their verification, before we assign you a new contract.</p>
             {% else %}
-            <p>Looks like you don't have any pending contracts!</p>
+                {% if task %}
+                <p>Your mission, should you choose to accept it, is to assassinate
+                    <span class='highlight'>{{target}}</span> by <span class='highlight'>{{task}}</span>.</p>
+                <p>Once you have completed your task, contact the game masters for confirmation before 
+                    clicking on the button below.</p>
+                <a class='button' href='/assassins/{{token}}/kill'>Contract completed</a>
+                {% else %}
+                <p>Looks like you don't have any pending contracts!</p>
+                {% endif %}
             {% endif %}
         {% else %}
         <p>You have unfortunately been assassinated :(</p>
