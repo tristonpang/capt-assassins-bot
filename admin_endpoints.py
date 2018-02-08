@@ -122,17 +122,21 @@ def confirmKill(contractID):
         telegramIDs = cur.fetchall()
 
         for teleUser in telegramIDs:
+            msg = ""
             if teleUser[0] == targetID:
-                sendMsg(teleUser[2], "*Oh no!* You have been assassinated.")
-            elif teleUser[1] == assID:
-                sendMsg(teleUser[2], "Your assassination has been confirmed.")
+                # sendMsg(teleUser[2], "*Oh no!* You have been assassinated.")
+                msg += "*Oh no!* You have been assassinated.\n\n"
+            elif teleUser[0] == assID:
+                # sendMsg(teleUser[2], "Your assassination has been confirmed.")
+                msg += "Your assassination has been confirmed.\n\n"
             else:
-                sendMsg(teleUser[2], "_There has been an assassination._")
-            sendMsg(teleUser[2], currStatus)
+                # sendMsg(teleUser[2], "_There has been an assassination._")
+                msg += "_There has been an assassination._\n\n"
+            sendMsg(teleUser[2], msg + currStatus)
 
     # Send the messages out
     
-    print(contractData)
+    # print(contractData)
 
     cur.close()
     return redirect("/assassins/admin/dashboard/")
