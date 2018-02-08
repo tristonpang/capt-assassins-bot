@@ -71,14 +71,14 @@ def killPage(token):
     conn.autocommit = True
     cur = conn.cursor()
 
-    cur.execute("SELECT user_id FROM users WHERE user_password = %s", (token,))
+    cur.execute("SELECT user_id, user_name FROM users WHERE user_password = %s", (token,))
     player = cur.fetchone()
     if player is not None:
         cur.execute("UPDATE contracts SET contract_pending_confirm = true where \
         contract_complete is null and contract_assid = %s", player[0])
         # Message the game masters
-        sendMsg(272553166, "An assassination attempt has been logged. Please check the [admin dashboard](https://yenter.io/assassins/admin/dashboard/)!")
-        sendMsg(378439213, "An assassination attempt has been logged. Please check the [admin dashboard](https://yenter.io/assassins/admin/dashboard/)!")
+        sendMsg(272553166, "An assassination attempt by "+player[1]+" has been logged. Please check the [admin dashboard](https://yenter.io/assassins/admin/dashboard/)!")
+        sendMsg(378439213, "An assassination attempt by "+player[1]+" has been logged. Please check the [admin dashboard](https://yenter.io/assassins/admin/dashboard/)!")
         return redirect("/assassins/" + token + "/?msg=You+have+assassinated+your+target.")
 
     # cur.execute("SELECT users.user_id, contracts.contract_id, contract_targetID, users.user_nickname, \
