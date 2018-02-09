@@ -69,7 +69,7 @@ def sendTestMsg():
     sendConfirmMsg(398049566, "An assassination attempt has been logged.")
 
 def fetchStatus(cur):
-    outputStr = "\n*Completed Contracts*\n"
+    outputStr = "*Completed Contracts*\n"
     cur.execute("SELECT assassin.user_nickname, target.user_nickname, \
     contracts.contract_complete FROM contracts INNER JOIN users AS assassin ON \
     contracts.contract_assid = assassin.user_id INNER JOIN users AS target ON \
