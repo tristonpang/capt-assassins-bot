@@ -52,23 +52,7 @@ def sendMsg(id, msg):
     print(r.text)
 
 def fetchStatus(cur):
-    cur.execute("SELECT users.user_nickname, users.user_alive, count(contracts.contract_complete) as numKills \
-    FROM users LEFT JOIN contracts ON users.user_id = contracts.contract_assid \
-    GROUP BY users.user_id ORDER BY users.user_alive DESC, numKills DESC, users.user_nickname")
-    users = cur.fetchall()
-    outputStr = "*Current Players*\n"
-    for user in users:
-        userData = "`" + user[0] + "` ("
-        if user[2] != 1:
-            userData += str(user[2])+" kills"
-        else:
-            userData += "1 kill"
-        userData += ")"
-        if user[1]:
-            outputStr += userData + "\n"
-        else:
-            outputStr += "_" + userData + " - dead_\n"
-    outputStr += "\n*Completed Contracts*\n"
+    outputStr = "\n*Completed Contracts*\n"
     cur.execute("SELECT assassin.user_nickname, target.user_nickname, \
     contracts.contract_complete FROM contracts INNER JOIN users AS assassin ON \
     contracts.contract_assid = assassin.user_id INNER JOIN users AS target ON \
@@ -77,4 +61,27 @@ def fetchStatus(cur):
     completedContracts = cur.fetchall()
     for contract in completedContracts:
         outputStr += "`"+contract[0] + "` killed `" + contract[1] + "` ("+contract[2].strftime("%a %d %b, %I:%M %p")+")\n"
+    
+    cur.execute("SELECT users.user_nickname, users.user_alive, count(contracts.contract_complete) as numKills \
+    FROM users LEFT JOIN contracts ON users.user_id = contracts.contract_assid \
+    GROUP BY users.user_id ORDER BY users.user_alive DESC, numKills DESC, users.user_nickname")
+    users = cur.fetchall()
+    outputStr += "*Current Players*\n"
+    for user in users:
+        kills = " ("
+        if user[2] != 1:
+            kills += str(user[2])+" kills"
+        else:
+            kills += "1 kill"
+        kills += ")"
+        # userData = "`" + user[0] + "` ("
+        # if user[2] != 1:
+        #     userData += str(user[2])+" kills"
+        # else:
+        #     userData += "1 kill"
+        # userData += ")"
+        if user[1]:
+            outputStr += "`" + user[0] + "` " + kills + "\n"
+        else:
+            outputStr += "_" + user[0] + kills + " - dead_\n"
     return outputStr
