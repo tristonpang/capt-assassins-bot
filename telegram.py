@@ -4,14 +4,7 @@ import psycopg2
 from datetime import datetime
 from private_vars import telegramBotURL, connStr
 
-# from flask_cache import Cache
-
-ids = set()
-
 teleBot = Blueprint('teleBot', __name__, template_folder='templates')
-
-# cache = SimpleCache()
-# cache = Cache(config={'CACHE_TYPE': 'filesystem', 'CACHE_DIR': '/'})
 
 @teleBot.route('/assassins/telegram/update/', methods = ["POST"])
 def telegramUpdate():
@@ -23,8 +16,6 @@ def telegramUpdate():
     print(data)
     if "message" in data:
         chatID = data["message"]["chat"]["id"]
-        if chatID not in ids:
-            ids.add(chatID)
         if "text" in data["message"] and data["message"]["text"][0:7] == "/status":
             # Send update
             print("Received status update request")
@@ -51,6 +42,32 @@ def sendMsg(id, msg):
         data = {"chat_id": id, "text": msg, "parse_mode" : "Markdown"})
     print(r.text)
 
+def sendConfirmMsg(id, msg):
+    keyboard = {
+        "inline_keyboard": [
+            [{
+                "text": "Accept", 
+                "callback_data": json.dumps({"decision": "accept", "contractID": 3})
+            }], 
+            [{
+                "text": "Reject", 
+                "callback_data": json.dumps({"decision": "reject", "contractID": 3})
+            }]
+        ]
+    }
+    r = requests.post(telegramBotURL+"sendMessage", data = {
+        "chat_id": id, 
+        "text": msg, 
+        "parse_mode": "Markdown",
+        "reply_markup": json.dumps(keyboard)
+    })
+    print(r.text)
+
+@teleBot.route("/testing/")
+def sendTestMsg():
+    sendConfirmMsg(167223959, "An assassination attempt has been logged.")
+    sendConfirmMsg(398049566, "An assassination attempt has been logged.")
+
 def fetchStatus(cur):
     outputStr = "\n*Completed Contracts*\n"
     cur.execute("SELECT assassin.user_nickname, target.user_nickname, \
@@ -66,7 +83,7 @@ def fetchStatus(cur):
     FROM users LEFT JOIN contracts ON users.user_id = contracts.contract_assid \
     GROUP BY users.user_id ORDER BY users.user_alive DESC, numKills DESC, users.user_nickname")
     users = cur.fetchall()
-    outputStr += "*Current Players*\n"
+    outputStr += "\n*Current Players*\n"
     for user in users:
         kills = " ("
         if user[2] != 1:
