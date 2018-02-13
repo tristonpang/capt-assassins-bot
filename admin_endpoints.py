@@ -116,7 +116,7 @@ def confirmKill(contractID):
         assID = contractData[0]
         targetID = contractData[1]
         cur.execute("UPDATE users SET user_alive = FALSE WHERE user_id = %s", (targetID,))
-        cur.execute("UPDATE contracts SET contract_assID = %s WHERE contract_assID = %s AND contract_completed IS NULL", (assID, targetID))
+        cur.execute("UPDATE contracts SET contract_assID = %s WHERE contract_assID = %s AND contract_complete IS NULL", (assID, targetID))
         currStatus = fetchStatus(cur)
         cur.execute("SELECT user_id, user_name, user_telegram FROM users WHERE user_telegram IS NOT NULL")
         telegramIDs = cur.fetchall()
