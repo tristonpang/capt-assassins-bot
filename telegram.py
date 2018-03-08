@@ -97,10 +97,11 @@ def fetchStatus(cur):
         #     userData += "1 kill"
         # userData += ")"
         if user[1]:
-            outputStr += user[0] + kills + "\n"
+            outputStr += user[0].replace("_", "\_") + kills + "\n"
         else:
             if alive:
                 alive = False
                 outputStr += "\n*Dead Players*\n"
-            outputStr += user[0] + kills + "\n"
+            outputStr += user[0].replace("_", "\_") + kills + "\n"
+    print(outputStr)
     return outputStr
