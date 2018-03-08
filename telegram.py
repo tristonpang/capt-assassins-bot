@@ -79,17 +79,16 @@ def fetchStatus(cur):
     for contract in completedContracts:
         outputStr += "`"+contract[0] + "` killed `" + contract[1] + "` ("+contract[2].strftime("%a %d %b, %I:%M %p")+")\n"
     
-    cur.execute("SELECT users.user_nickname, users.user_alive, count(contracts.contract_complete) as numKills \
-    FROM users LEFT JOIN contracts ON users.user_id = contracts.contract_assid \
-    GROUP BY users.user_id ORDER BY users.user_alive DESC, numKills DESC, users.user_nickname")
+    cur.execute("SELECT users.user_nickname, users.user_alive, count(case when contracts.contract_complete > '2018-03-07 20:30:00' then 2 else null end) + count(contracts.contract_complete) points FROM users LEFT JOIN contracts ON users.user_id = contracts.contract_assid GROUP BY users.user_id ORDER BY users.user_alive DESC, points DESC, users.user_nickname")
     users = cur.fetchall()
-    outputStr += "\n*Current Players*\n"
+    outputStr += "\n*Alive Players*\n"
+    alive = True
     for user in users:
         kills = " ("
         if user[2] != 1:
-            kills += str(user[2])+" kills"
+            kills += str(user[2])+" points"
         else:
-            kills += "1 kill"
+            kills += "1 point"
         kills += ")"
         # userData = "`" + user[0] + "` ("
         # if user[2] != 1:
@@ -100,5 +99,8 @@ def fetchStatus(cur):
         if user[1]:
             outputStr += "`" + user[0] + "` " + kills + "\n"
         else:
-            outputStr += "_" + user[0] + kills + " - dead_\n"
+            if alive:
+                alive = False
+                outputStr += "\n*Dead Players*\n"
+            outputStr += user[0] + kills + " - dead\n"
     return outputStr
