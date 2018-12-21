@@ -65,8 +65,8 @@ def sendConfirmMsg(id, msg):
 
 @teleBot.route("/testing/")
 def sendTestMsg():
-    sendConfirmMsg(167223959, "An assassination attempt has been logged.")
-    sendConfirmMsg(398049566, "An assassination attempt has been logged.")
+    # Can be called to check if the bot is able to send messages. 
+    sendConfirmMsg(#< INSERT TELEGRAM ID HERE >, "An assassination attempt has been logged.")
 
 def fetchStatus(cur):
     outputStr = "*Completed Contracts*\n"
