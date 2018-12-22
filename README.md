@@ -18,25 +18,25 @@ The Python scripts assume a VPS with a domain name tagged to it. A Telegram bot 
 
 1. You will need a Postgresql database set up. < Include the set up instructions here>
 2. Install the required Python libraries:
-  
-  ```bash
-  $ pip install flask requests psycopg2 uwsgi
-  ```
-  
+
+    ```bash
+    $ pip install flask requests psycopg2 uwsgi
+    ```
+
 3. Clone the directory:
-  
-  ```bash
-  $ git clone https://github.com/tristonpang/capt-assassins-bot
-  ```
-  
+
+    ```bash
+    $ git clone https://github.com/tristonpang/capt-assassins-bot
+    ```
+
 4. `cd` in:
-  
-  ```bash
-  $ cd capt-assassins-bot
-  ```
-  
+
+    ```bash
+    $ cd capt-assassins-bot
+    ```
+
 5. Start up a uWSGI server:
-  
-  ```bash
-  $ uwsgi --http :5000 --wsgi-file wsgi.py
-  ```
+
+    ```bash
+    $ uwsgi --http :5000 --wsgi-file wsgi.py
+    ```
